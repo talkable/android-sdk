@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Talkable Demo Integration</string>
+    <string name="eventBtnLabel">Event via API</string>
+    <string name="purchaseBtnLabel">Purchase via API</string>
+    <string name="affiliateBtnLabel">Affiliate Member</string>
+    <string name="affiliateWithEmailBtnLabel">Affiliate Member with Email</string>
+    <string name="apiBtnLabel">API</string>
+    <string name="emailTextLabel">Email</string>
+    <string name="orderNumberTextLabel">Order Number</string>
+    <string name="couponTextLabel">Coupon</string>
+    <string name="subtotalTextLabel">Subtotal</string>
+    <string name="eventCategoryTextLabel">Event Category</string>
+    <string name="eventCategoryTextDefault">signup</string>
+    <string name="webUUIDTextLabel">Web UUID</string>
+    <string name="offerIDTextLabel">Offer ID</string>
+    <string name="affiliateMemberViaApiBtnLabel">Affiliate Member via API</string>
+    <string name="deepLinkingBtnLabel">Handle Deep Linking Params</string>
+
+    <string name="facebook_app_id">549932915208564</string>
+    <string name="couponTextDefault">TKBL_COUPON</string>
+    <string name="orderNumberTextDefault">12345</string>
+    <string name="emailTextDefault">user@example.com</string>
+    <string name="getRewardsBtnLabel">Count rewards</string>
+    <string name="postPurchaseBtnLabel">Post-purchase</string>
+</resources>

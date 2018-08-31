@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Sdk</string>
+    <string name="subtotalTextDefault">14.99</string>
+</resources>
