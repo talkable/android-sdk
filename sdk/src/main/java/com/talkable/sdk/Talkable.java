@@ -66,32 +66,25 @@ public class Talkable {
     public static final String ERROR_REASON_SITE_NOT_FOUND = "SITE_NOT_FOUND";
 
     private static OkHttpClient httpClient;
-    private static String server, siteSlug, nativeFeatures, defaultUserAgent;
-    private static boolean debug = false;
+    private static String server, siteSlug, nativeFeatures, defaultUserAgent, debugDeviceId;
     private static Map<String, String> credentialsMap;
-    private static Boolean initialized = false;
+    private static Boolean initialized = false, debug = false;
 
     //----------------+
     // Initialization |
     //----------------+
 
     public static void initialize(Context context) throws IncorrectInstallationException {
-        Context applicationContext = context.getApplicationContext();
+        initialize(context, null);
+    }
 
-        credentialsMap = ManifestInfo.getCredentialsConfiguration(context);
-        if (credentialsMap.keySet().size() == 1) {
-            String talkableSiteSlug = credentialsMap.keySet().iterator().next();
-            initialize(applicationContext, talkableSiteSlug);
-        } else {
-            String defaultSiteSlug = ManifestInfo.getDefaultSiteSlug(applicationContext);
-            if (defaultSiteSlug != null && !defaultSiteSlug.isEmpty()) {
-                initialize(applicationContext, defaultSiteSlug);
-            } else {
-                throw new IncorrectInstallationException("Default site slug is not specified. " +
-                        "Set default site slug inside an element with `" + ManifestInfo.DEFAULT_SITE_SLUG_KEY+
-                        "` name");
-            }
+    public static void initialize(Context context, String initialSiteSlug, boolean debug, String debugDeviceId) throws IncorrectInstallationException {
+        Talkable.debug = debug;
+        if (debug) {
+            Talkable.debugDeviceId = debugDeviceId == null ? UUID.randomUUID().toString() : debugDeviceId;
+            Log.d(TAG, "Debug mode engaged. Device ID: " + debugDeviceId);
         }
+        initialize(context, initialSiteSlug);
     }
 
     public static void initialize(Context context, String initialSiteSlug) throws IncorrectInstallationException {
@@ -100,9 +93,23 @@ public class Talkable {
             return;
         }
 
-        Log.d(TAG, "Initializing Talkable SDK with `" + initialSiteSlug + "` site slug");
-
         Context applicationContext = context.getApplicationContext();
+
+        if (initialSiteSlug == null) {
+            credentialsMap = ManifestInfo.getCredentialsConfiguration(context);
+            if (credentialsMap.keySet().size() == 1) {
+                initialSiteSlug = credentialsMap.keySet().iterator().next();
+            } else {
+                initialSiteSlug = ManifestInfo.getDefaultSiteSlug(applicationContext);
+            }
+            if (initialSiteSlug == null || initialSiteSlug.isEmpty()) {
+                throw new IncorrectInstallationException("Default site slug is not specified. " +
+                        "Set default site slug inside an element with `" + ManifestInfo.DEFAULT_SITE_SLUG_KEY+
+                        "` name");
+            }
+        }
+
+        Log.d(TAG, "Initializing Talkable SDK with `" + initialSiteSlug + "` site slug");
 
         loadConfig(applicationContext);
         setSiteSlug(initialSiteSlug);
@@ -374,12 +381,12 @@ public class Talkable {
         siteSlug = newSiteSlug;
     }
 
-    public static void setDebug(boolean newDebug) {
-        debug = newDebug;
-    }
-
     public static boolean getDebug() {
         return debug;
+    }
+
+    public static String getDebugDeviceId() {
+        return debugDeviceId;
     }
 
     public static Boolean isInitialized() {
@@ -412,15 +419,11 @@ public class Talkable {
     }
 
     public static void trackAppInstall() {
-        if (!getDebug() && TalkablePreferencesStore.isAppInstallTracked()) {
+        if (!TalkablePreferencesStore.isAppInstallTracked()) {
             return;
         }
 
         String eventId = TalkablePreferencesStore.getAndroidId();
-        if (getDebug()) {
-            eventId = UUID.randomUUID().toString();
-        }
-
         Event event = new Event(eventId, Origin.APP_INSTALL_EVENT_CATEGORY);
         TalkableApi.createOrigin(event, new Callback2<Origin, Offer>() {
             @Override

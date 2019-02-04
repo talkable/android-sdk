@@ -37,7 +37,7 @@ public class TalkableDeepLinking {
             return;
         }
         trackVisit(params.get(VISITOR_OFFER_KEY));
-        if (Talkable.getDebug() || !TalkablePreferencesStore.isAppInstallTracked()) {
+        if (!TalkablePreferencesStore.isAppInstallTracked()) {
             trackAppInstall(params.get(UUID_KEY));
         }
     }
@@ -99,9 +99,6 @@ public class TalkableDeepLinking {
         TalkablePreferencesStore.setAlternateUUID(uuid);
 
         String eventId = TalkablePreferencesStore.getAndroidId();
-        if (Talkable.getDebug()) {
-            eventId = UUID.randomUUID().toString();
-        }
         Event event = new Event(eventId, Origin.APP_INSTALL_EVENT_CATEGORY);
         TalkableApi.createOrigin(event, new Callback2<Origin, Offer>() {
             @Override

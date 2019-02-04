@@ -16,4 +16,28 @@ public class Reward {
     Double amount;
     @SerializedName("coupon_code") String couponCode;
     Status status;
+
+    public String getReason() {
+        return reason;
+    }
+
+    public String getIncentiveType() {
+        return incentiveType;
+    }
+
+    public String getIncentiveDescription() {
+        return incentiveDescription;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 }

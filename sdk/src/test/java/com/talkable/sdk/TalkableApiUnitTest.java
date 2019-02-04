@@ -285,6 +285,9 @@ public class TalkableApiUnitTest {
                                     @Override
                                     public void onSuccess(Reward[] rewards) {
                                         assertEquals(rewards.length, 1);
+                                        assertEquals(rewards[0].getCouponCode(), "AD_3_OFF");
+                                        assertEquals(rewards[0].getAmount(), 3, 0);
+                                        assertEquals(rewards[0].getReason(), "shared");
 
                                         r.done();
                                     }

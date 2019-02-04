@@ -11,6 +11,7 @@ import com.talkable.sdk.models.Visitor;
 import com.talkable.sdk.utils.PreferencesStore;
 
 import java.util.Set;
+import java.util.UUID;
 
 public class TalkablePreferencesStore {
     private static final String SHARED_PREFERENCES_NAME = "TKBL_PREFERENCES";
@@ -29,11 +30,15 @@ public class TalkablePreferencesStore {
         if (isInitialized()) {
             return;
         }
-
-        setAndroidId(context);
         setPreferencesStore(context);
+        if (Talkable.getDebug()) {
+            preferencesStore.putBoolean(APP_INSTALLED_KEY, false);
+            setAndroidId(Talkable.getDebugDeviceId());
+        } else {
+            setAndroidId(context);
+        }
         cleanupOfferWebData();
-        if (getMainUUID() == null) {
+        if (Talkable.getDebug() || getMainUUID() == null) {
             generateMainUuid();
         }
     }
@@ -57,6 +62,10 @@ public class TalkablePreferencesStore {
     // TODO: remove android ID usage and use an analog of IOS KeyChain
     private static void setAndroidId(Context context) {
         androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    private static void setAndroidId(String customAndroidId) {
+        androidId = customAndroidId;
     }
 
     public static String getAndroidId() {

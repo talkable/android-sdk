@@ -216,7 +216,6 @@ public class MainActivity extends Activity {
     }
 
     public void onDeepLinkingClick(View view) {
-        Talkable.setDebug(true);
         EditText webUuidText = findViewById(R.id.webUUIDText);
         String webUuid = webUuidText.getText().toString();
         EditText offerIdText = findViewById(R.id.offerIDText);
@@ -229,6 +228,5 @@ public class MainActivity extends Activity {
             paramsMap.put(VISITOR_OFFER_KEY, offerId);
         }
         TalkableDeepLinking.track(paramsMap);
-        Talkable.setDebug(false);
     }
 }
