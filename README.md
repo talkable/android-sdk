@@ -23,7 +23,7 @@ allprojects {
 
 ```gradle
 dependencies {
-	implementation 'com.github.talkable:android-sdk:0.5.6'
+	implementation 'com.github.talkable:android-sdk:0.5.7'
 }
 ```
 
