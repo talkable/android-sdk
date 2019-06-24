@@ -10,6 +10,7 @@ import com.talkable.sdk.models.OfferWebData;
 import com.talkable.sdk.models.Visitor;
 import com.talkable.sdk.utils.PreferencesStore;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 import java.util.UUID;
 
@@ -73,26 +74,12 @@ public class TalkablePreferencesStore {
     }
 
     private static void generateMainUuid() {
-        Visitor visitor = new Visitor();
-        visitor.setUuidFromAndroidId(getAndroidId());
-
-        TalkableApi.createVisitor(visitor, new Callback1<Visitor>() {
-            @Override
-            public void onSuccess(Visitor arg1) {
-
-            }
-
-            @Override
-            public void onError(ApiError error) {
-                String message = error.getMessage();
-                if (message != null) {
-                    Log.d(Talkable.TAG, message);
-                }
-            }
-        });
-
-        mainUUID = visitor.getUuid();
-        preferencesStore.putString(MAIN_UUID_KEY, visitor.getUuid());
+        try {
+            mainUUID = UUID.nameUUIDFromBytes(getAndroidId().getBytes("UTF-8")).toString();
+            preferencesStore.putString(MAIN_UUID_KEY, mainUUID);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String getMainUUID() {
