@@ -32,10 +32,6 @@ public class OriginSerializer implements JsonSerializer<Origin> {
         data.addProperty("alternative_visitor_uuid", TalkablePreferencesStore.getAlternateUUID());
         data.addProperty("ip_address", src.getIpAddress());
 
-        if (src.getCustomProperties() != null) {
-            data.add("custom_properties", JsonUtils.toJsonTree(src.getCustomProperties()));
-        }
-
         data.remove("encodedEmail");
 
         if (src.getCampaignTags() != null) {

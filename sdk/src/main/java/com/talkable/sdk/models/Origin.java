@@ -21,15 +21,6 @@ public class Origin implements ApiSendable {
     String[] campaignTags = {};
     String trafficSource;
     @SerializedName("ip_address") String ipAddress = "current";
-    @SerializedName("custom_properties") HashMap<String, String> customProperties;
-
-    public HashMap<String, String> getCustomProperties() {
-        return customProperties;
-    }
-
-    public void setCustomProperties(HashMap<String, String> customProperties) {
-        this.customProperties = customProperties;
-    }
 
     protected Origin() {
         trafficSource = DEFAULT_TRAFFIC_SOURCE;

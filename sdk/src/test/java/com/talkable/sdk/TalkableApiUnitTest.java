@@ -114,16 +114,15 @@ public class TalkableApiUnitTest {
                 Purchase purchase = new Purchase(subtotal, orderNumber, couponCode);
                 Customer customer = null;
                 try {
-                    customer = new Customer("user@example.com");
+                    HashMap<String, String> customProperties = new HashMap<String, String>();
+                    customProperties.put("badger", "mushroom");
+                    customer = new Customer(null, null, null, "user@example.com", customProperties);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
+
                 purchase.setCustomer(customer);
                 purchase.addItem(new Item(subtotal, quantity, productId));
-
-                HashMap<String, String> customProperties = new HashMap<String, String>();
-                customProperties.put("badger", "mushroom");
-                purchase.setCustomProperties(customProperties);
 
                 TalkableApi.createOrigin(purchase, new Callback2<Origin, Offer>() {
                     @Override
@@ -168,10 +167,6 @@ public class TalkableApiUnitTest {
 
                 Event event = new Event(eventNumber, eventCategory, subtotal, couponCode);
 
-                HashMap<String, String> customProperties = new HashMap<String, String>();
-                customProperties.put("badger", "mushroom");
-                event.setCustomProperties(customProperties);
-
                 TalkableApi.createOrigin(event, new Callback2<Origin, Offer>() {
                     @Override
                     public void onSuccess(Origin origin, Offer offer) {
@@ -212,10 +207,6 @@ public class TalkableApiUnitTest {
             @Override
             public void run(final Result r) {
                 AffiliateMember affiliateMember = new AffiliateMember();
-
-                HashMap<String, String> customProperties = new HashMap<String, String>();
-                customProperties.put("badger", "mushroom");
-                affiliateMember.setCustomProperties(customProperties);
 
                 TalkableApi.createOrigin(affiliateMember, new Callback2<Origin, Offer>() {
                     @Override
