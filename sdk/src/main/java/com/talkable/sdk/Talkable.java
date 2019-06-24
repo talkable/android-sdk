@@ -45,6 +45,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 @SuppressWarnings("WeakerAccess")
 public class Talkable {
@@ -133,7 +134,11 @@ public class Talkable {
     }
 
     private static void setHttpClient(Context context) {
-        httpClient = new OkHttpClient();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        httpClient = new OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build();
         defaultUserAgent = getDefaultUserAgentString(context);
     }
 

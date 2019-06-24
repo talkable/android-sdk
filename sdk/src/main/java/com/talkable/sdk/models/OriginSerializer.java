@@ -7,6 +7,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.talkable.sdk.Talkable;
 import com.talkable.sdk.TalkablePreferencesStore;
+import com.talkable.sdk.utils.JsonUtils;
 
 import java.lang.reflect.Type;
 
@@ -31,6 +32,10 @@ public class OriginSerializer implements JsonSerializer<Origin> {
         data.addProperty("alternative_visitor_uuid", TalkablePreferencesStore.getAlternateUUID());
         data.addProperty("ip_address", src.getIpAddress());
 
+        if (src.getCustomProperties() != null) {
+            data.add("custom_properties", JsonUtils.toJsonTree(src.getCustomProperties()));
+        }
+
         data.remove("encodedEmail");
 
         if (src.getCampaignTags() != null) {
@@ -39,7 +44,6 @@ public class OriginSerializer implements JsonSerializer<Origin> {
             campaignTags = context.serialize(new String[0]).getAsJsonArray();
         }
         data.add("campaign_tags", campaignTags);
-
 
         json.add("data", data);
 

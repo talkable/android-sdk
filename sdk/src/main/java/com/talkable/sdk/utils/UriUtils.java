@@ -121,6 +121,15 @@ public class UriUtils {
             }
         }
 
+        Map<String, String> customProperties = origin.getCustomProperties();
+        if (customProperties != null) {
+            for (Map.Entry<String, String> prop : customProperties.entrySet()) {
+                if (prop.getValue() != null) {
+                    params.put(String.format("custom_properties[%s]", prop.getKey()), prop.getValue());
+                }
+            }
+        }
+
         return publicUriBuilder(controller, "create", params).build();
     }
 

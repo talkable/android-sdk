@@ -27,6 +27,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
 import okhttp3.OkHttpClient;
@@ -120,6 +121,10 @@ public class TalkableApiUnitTest {
                 purchase.setCustomer(customer);
                 purchase.addItem(new Item(subtotal, quantity, productId));
 
+                HashMap<String, String> customProperties = new HashMap<String, String>();
+                customProperties.put("badger", "mushroom");
+                purchase.setCustomProperties(customProperties);
+
                 TalkableApi.createOrigin(purchase, new Callback2<Origin, Offer>() {
                     @Override
                     public void onSuccess(Origin origin, Offer offer) {
@@ -162,6 +167,11 @@ public class TalkableApiUnitTest {
                 String couponCode = "COUPON";
 
                 Event event = new Event(eventNumber, eventCategory, subtotal, couponCode);
+
+                HashMap<String, String> customProperties = new HashMap<String, String>();
+                customProperties.put("badger", "mushroom");
+                event.setCustomProperties(customProperties);
+
                 TalkableApi.createOrigin(event, new Callback2<Origin, Offer>() {
                     @Override
                     public void onSuccess(Origin origin, Offer offer) {
@@ -202,6 +212,10 @@ public class TalkableApiUnitTest {
             @Override
             public void run(final Result r) {
                 AffiliateMember affiliateMember = new AffiliateMember();
+
+                HashMap<String, String> customProperties = new HashMap<String, String>();
+                customProperties.put("badger", "mushroom");
+                affiliateMember.setCustomProperties(customProperties);
 
                 TalkableApi.createOrigin(affiliateMember, new Callback2<Origin, Offer>() {
                     @Override

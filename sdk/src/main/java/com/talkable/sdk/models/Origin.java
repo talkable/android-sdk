@@ -3,6 +3,8 @@ package com.talkable.sdk.models;
 import com.google.gson.annotations.SerializedName;
 import com.talkable.sdk.interfaces.ApiSendable;
 
+import java.util.HashMap;
+
 public class Origin implements ApiSendable {
     public static final String APP_INSTALL_EVENT_CATEGORY = "android_app_installed";
     public static final String DEFAULT_TRAFFIC_SOURCE = "android";
@@ -19,6 +21,15 @@ public class Origin implements ApiSendable {
     String[] campaignTags = {};
     String trafficSource;
     @SerializedName("ip_address") String ipAddress = "current";
+    @SerializedName("custom_properties") HashMap<String, String> customProperties;
+
+    public HashMap<String, String> getCustomProperties() {
+        return customProperties;
+    }
+
+    public void setCustomProperties(HashMap<String, String> customProperties) {
+        this.customProperties = customProperties;
+    }
 
     protected Origin() {
         trafficSource = DEFAULT_TRAFFIC_SOURCE;
