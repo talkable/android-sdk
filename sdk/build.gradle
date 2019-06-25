@@ -49,12 +49,14 @@ dependencies {
         exclude module: 'objenesis'
     }
 
-    androidTestImplementation 'com.android.support:support-annotations:27.1.0'
+    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test:rules:1.0.1'
 
+    implementation 'com.android.support:support-annotations:27.1.1'
     implementation 'com.squareup.okhttp3:okhttp:3.2.0' // update to a new version when https://github.com/square/okhttp/issues/3928 will be fixed
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
-    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.google.code.gson:gson:2.8.+'
     implementation 'com.android.support:support-v4:26.1.0'
 }

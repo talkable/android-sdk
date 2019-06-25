@@ -40,7 +40,6 @@ public class OriginSerializer implements JsonSerializer<Origin> {
         }
         data.add("campaign_tags", campaignTags);
 
-
         json.add("data", data);
 
         return json;

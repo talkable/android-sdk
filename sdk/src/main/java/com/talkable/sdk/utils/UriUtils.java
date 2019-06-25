@@ -88,6 +88,15 @@ public class UriUtils {
             params.put("o[email]", encodedEmail);
             params.put("o[first_name]", customer.getFirstName());
             params.put("o[last_name]", customer.getLastName());
+
+            Map<String, String> customProperties = customer.getCustomProperties();
+            if (customProperties != null) {
+                for (Map.Entry<String, String> prop : customProperties.entrySet()) {
+                    if (prop.getValue() != null) {
+                        params.put(String.format("custom_properties[%s]", prop.getKey()), prop.getValue());
+                    }
+                }
+            }
         }
 
         if (origin instanceof Event) {

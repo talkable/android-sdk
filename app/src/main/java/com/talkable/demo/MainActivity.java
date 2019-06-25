@@ -147,9 +147,11 @@ public class MainActivity extends Activity {
     }
 
     private Customer getCustomer() {
-        Customer customer = new Customer();
+        Customer customer = null;
+        HashMap<String, String> customProperties = new HashMap<String, String>();
+        customProperties.put("prop1", "value2");
         try {
-            customer.setEmail(getEmail());
+            customer = new Customer(null, null, null, getEmail(), customProperties);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

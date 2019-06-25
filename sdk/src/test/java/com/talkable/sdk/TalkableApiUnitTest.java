@@ -27,6 +27,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
 import okhttp3.OkHttpClient;
@@ -114,9 +115,13 @@ public class TalkableApiUnitTest {
                 Customer customer = null;
                 try {
                     customer = new Customer("user@example.com");
+                    HashMap<String, String> customProperties = new HashMap<String, String>();
+                    customProperties.put("badger", "mushroom");
+                    customer.setCustomProperties(customProperties);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
+
                 purchase.setCustomer(customer);
                 purchase.addItem(new Item(subtotal, quantity, productId));
 
@@ -162,6 +167,7 @@ public class TalkableApiUnitTest {
                 String couponCode = "COUPON";
 
                 Event event = new Event(eventNumber, eventCategory, subtotal, couponCode);
+
                 TalkableApi.createOrigin(event, new Callback2<Origin, Offer>() {
                     @Override
                     public void onSuccess(Origin origin, Offer offer) {
