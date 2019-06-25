@@ -7,7 +7,6 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.talkable.sdk.Talkable;
 import com.talkable.sdk.TalkablePreferencesStore;
-import com.talkable.sdk.utils.JsonUtils;
 
 import java.lang.reflect.Type;
 

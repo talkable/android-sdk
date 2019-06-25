@@ -114,9 +114,10 @@ public class TalkableApiUnitTest {
                 Purchase purchase = new Purchase(subtotal, orderNumber, couponCode);
                 Customer customer = null;
                 try {
+                    customer = new Customer("user@example.com");
                     HashMap<String, String> customProperties = new HashMap<String, String>();
                     customProperties.put("badger", "mushroom");
-                    customer = new Customer(null, null, null, "user@example.com", customProperties);
+                    customer.setCustomProperties(customProperties);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

@@ -3,8 +3,6 @@ package com.talkable.sdk.models;
 import com.google.gson.annotations.SerializedName;
 import com.talkable.sdk.interfaces.ApiSendable;
 
-import java.util.HashMap;
-
 public class Origin implements ApiSendable {
     public static final String APP_INSTALL_EVENT_CATEGORY = "android_app_installed";
     public static final String DEFAULT_TRAFFIC_SOURCE = "android";
