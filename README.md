@@ -1,5 +1,6 @@
 # Talkable Android SDK
 
+[![Build Status](https://circleci.com/gh/talkable/android-sdk.svg?style=svg)](https://circleci.com/gh/talkable/android-sdk)
 [![](https://jitpack.io/v/talkable/android-sdk.svg)](https://jitpack.io/#talkable/android-sdk)
 
 Talkable Android SDK makes it easy to integrate Talkable referral functionality into Android apps.

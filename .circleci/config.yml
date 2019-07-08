@@ -1,0 +1,47 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/android:api-27-alpha
+        environment:
+          JVM_OPTS: -Xmx3200m
+
+    working_directory: ~/android-sdk
+
+    steps:
+      - checkout
+      - run:
+          name: Create configuration files
+          command: |
+            touch api_keys.properties
+            cat > keystore.properties << EOL
+            keyAlias = circleci
+            keyPassword = circleci
+            storeFile = ./../keystore.jks
+            storePassword = circleci
+            EOL
+
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+      - run:
+          name: Download dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+
+      - run:
+          name: Run tests
+          command: ./gradlew :clean :sdk:test
+
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
