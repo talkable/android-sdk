@@ -11,7 +11,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 38
-        versionName "0.5.8"
+        versionName "0.5.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -58,5 +58,5 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation 'com.google.code.gson:gson:2.8.+'
-    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:support-v4:27.1.0'
 }

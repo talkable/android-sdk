@@ -3,13 +3,14 @@ package com.talkable.sdk.models;
 import com.google.gson.annotations.SerializedName;
 
 public enum SharingChannel {
-    @SerializedName("facebook")         FACEBOOK("facebook"),
-    @SerializedName("facebook_message") FACEBOOK_MESSAGE("facebook_message"),
-    @SerializedName("twitter")          TWITTER("twitter"),
-    @SerializedName("linkedin")         LINKEDIN("linkedin"),
-    @SerializedName("email")            EMAIL("email"),
-    @SerializedName("sms")              SMS("sms"),
-    @SerializedName("other")            OTHER("other");
+    @SerializedName("facebook")             FACEBOOK("facebook"),
+    @SerializedName("facebook_message")     FACEBOOK_MESSAGE("facebook_message"),
+    @SerializedName("twitter")              TWITTER("twitter"),
+    @SerializedName("linkedin")             LINKEDIN("linkedin"),
+    @SerializedName("email")                EMAIL("email"),
+    @SerializedName("sms")                  SMS("sms"),
+    @SerializedName("other")                OTHER("other"),
+    @SerializedName("direct_email_native")  NATIVE_MAIL("direct_email_native");
 
     private final String identifier;
 

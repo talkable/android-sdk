@@ -50,6 +50,13 @@ class WebAppInterface {
                     talkableOfferFragment.responsiveIframeHeight(
                             JsonUtils.getJsonInt(json, "height"));
                     break;
+                case "share_offer_via_native_mail":
+                    talkableOfferFragment.shareOfferViaNativeMail(
+                            JsonUtils.getJsonString(json, "subject"),
+                            JsonUtils.getJsonString(json, "message"),
+                            JsonUtils.getJsonString(json, "claim_url")
+                    );
+                    break;
                 case "share_offer_via_facebook":
                     talkableOfferFragment.shareOfferViaFacebook(
                             JsonUtils.getJsonString(json, "claim_url"),

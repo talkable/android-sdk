@@ -39,10 +39,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
+
 public class TalkableOfferFragment extends Fragment {
     public static final String OFFER_CODE_PARAM = "offer_code_param";
-    public static final int SEND_SMS_CODE = 1;
-    public static final int REQUEST_READ_CONTACTS = 2;
+    public static final int REQUEST_CODE_SEND_SMS = 1;
+    public static final int REQUEST_CODE_READ_CONTACTS = 2;
+    public static final int REQUEST_CODE_SEND_NATIVE_MAIL = 3;
 
     private WebView mWebView;
     private WebAppInterface mWebAppInterface;
@@ -125,8 +128,14 @@ public class TalkableOfferFragment extends Fragment {
             FacebookUtils.onActivityResult(requestCode, resultCode, data);
         }
 
-        if (requestCode == SEND_SMS_CODE && mWebAppInterface != null) { // resultCode always RESULT_CANCELED for Intent.ACTION_SENDTO
+        if (mWebAppInterface == null) return;
+
+        if (requestCode == REQUEST_CODE_SEND_SMS) { // resultCode always RESULT_CANCELED for SMS sharing
             shareSucceeded(SharingChannel.SMS.toString());
+        }
+
+        if (requestCode == REQUEST_CODE_SEND_NATIVE_MAIL && resultCode == Activity.RESULT_OK) {
+            shareSucceeded(SharingChannel.NATIVE_MAIL.toString());
         }
     }
 
@@ -216,17 +225,25 @@ public class TalkableOfferFragment extends Fragment {
     // Callbacks |
     //-----------+
 
+    public void shareOfferViaNativeMail(String subject, String message, String claimUrl) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
+        if (subject != null) {
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        }
+        if (message != null) {
+            intent.putExtra(Intent.EXTRA_TEXT, message);
+        }
+        startActivityForResult(intent, REQUEST_CODE_SEND_NATIVE_MAIL);
+    }
+
     public void shareOfferViaSms(String recipients, String message, String claimUrl) {
         String uriString = "sms:";
-        if (recipients != null) {
-            uriString += recipients;
-        }
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse(uriString));
         if (message != null && claimUrl != null && !message.contains(claimUrl)) {
             message += " " + claimUrl;
         }
         intent.putExtra("sms_body", message);
-        startActivityForResult(intent, TalkableOfferFragment.SEND_SMS_CODE);
+        startActivityForResult(intent, REQUEST_CODE_SEND_SMS);
     }
 
     public void importContacts() {
@@ -236,14 +253,14 @@ public class TalkableOfferFragment extends Fragment {
                 == PackageManager.PERMISSION_GRANTED) {
             publishImportedContacts();
         } else {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_READ_CONTACTS);
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CODE_READ_CONTACTS);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_READ_CONTACTS:
+            case REQUEST_CODE_READ_CONTACTS:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     publishImportedContacts();
                 } else {
