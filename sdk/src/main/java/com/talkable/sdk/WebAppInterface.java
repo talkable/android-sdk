@@ -52,7 +52,6 @@ class WebAppInterface {
                     break;
                 case "share_offer_via_native_mail":
                     talkableOfferFragment.shareOfferViaNativeMail(
-                            JsonUtils.getJsonString(json, "recipients"),
                             JsonUtils.getJsonString(json, "subject"),
                             JsonUtils.getJsonString(json, "message"),
                             JsonUtils.getJsonString(json, "claim_url")

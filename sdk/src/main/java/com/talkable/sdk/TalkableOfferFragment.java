@@ -225,11 +225,8 @@ public class TalkableOfferFragment extends Fragment {
     // Callbacks |
     //-----------+
 
-    public void shareOfferViaNativeMail(String recipients, String subject, String message, String claimUrl) {
+    public void shareOfferViaNativeMail(String subject, String message, String claimUrl) {
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
-        if (recipients != null) {
-            intent.putExtra(Intent.EXTRA_EMAIL, recipients);
-        }
         if (subject != null) {
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         }
