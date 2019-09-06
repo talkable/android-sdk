@@ -181,12 +181,16 @@ public class Talkable {
             isMessengerInstalled = MessengerUtils.hasMessengerInstalled(context);
         }
 
+        Intent sendNativeMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
+        Boolean canSendNativeMail = !context.getPackageManager().queryIntentActivities(sendNativeMailIntent, 0).isEmpty();
+
         JsonObject json = new JsonObject();
         json.addProperty("send_sms", isSmsAvailable);
         json.addProperty("copy_to_clipboard", true);
         json.addProperty("share_via_facebook", FacebookSdk.isInitialized());
         json.addProperty("share_via_facebook_messenger", FacebookSdk.isInitialized() && isMessengerInstalled);
         json.addProperty("share_via_twitter", false);
+        json.addProperty("share_via_native_mail", canSendNativeMail);
         json.addProperty("sdk_version", BuildConfig.VERSION_NAME);
         json.addProperty("sdk_build", BuildConfig.VERSION_CODE);
 
