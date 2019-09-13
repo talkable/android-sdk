@@ -172,13 +172,18 @@ public class Talkable {
     private static void setNativeFeatures(Context context) {
         Boolean isSmsAvailable = false;
         Boolean isMessengerInstalled = false;
+        Boolean isMailAvailable = false;
 
         if (context != null) {
             if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY) &&
                     ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getSimState() == TelephonyManager.SIM_STATE_READY) {
                 isSmsAvailable = true;
             }
+
             isMessengerInstalled = MessengerUtils.hasMessengerInstalled(context);
+
+            Intent sendNativeMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
+            isMailAvailable = !context.getPackageManager().queryIntentActivities(sendNativeMailIntent, 0).isEmpty();
         }
 
         JsonObject json = new JsonObject();
@@ -187,6 +192,7 @@ public class Talkable {
         json.addProperty("share_via_facebook", FacebookSdk.isInitialized());
         json.addProperty("share_via_facebook_messenger", FacebookSdk.isInitialized() && isMessengerInstalled);
         json.addProperty("share_via_twitter", false);
+        json.addProperty("share_via_native_mail", isMailAvailable);
         json.addProperty("sdk_version", BuildConfig.VERSION_NAME);
         json.addProperty("sdk_build", BuildConfig.VERSION_CODE);
 
