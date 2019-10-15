@@ -3,6 +3,7 @@ package com.talkable.sdk;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -38,8 +39,6 @@ import com.talkable.sdk.utils.JsonUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.app.Activity;
 
 public class TalkableOfferFragment extends Fragment {
     public static final String OFFER_CODE_PARAM = "offer_code_param";
@@ -226,6 +225,9 @@ public class TalkableOfferFragment extends Fragment {
     //-----------+
 
     public void shareOfferViaNativeMail(String subject, String message, String claimUrl) {
+        if (!Talkable.isNativeFeatureAvailable(Talkable.FEATURE_SHARE_VIA_NATIVE_EMAIL)) {
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
         if (subject != null) {
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
@@ -237,6 +239,9 @@ public class TalkableOfferFragment extends Fragment {
     }
 
     public void shareOfferViaSms(String recipients, String message, String claimUrl) {
+        if (!Talkable.isNativeFeatureAvailable(Talkable.FEATURE_SEND_SMS)) {
+            return;
+        }
         String uriString = "sms:";
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse(uriString));
         if (message != null && claimUrl != null && !message.contains(claimUrl)) {
