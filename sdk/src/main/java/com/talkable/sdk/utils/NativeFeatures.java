@@ -71,12 +71,12 @@ public class NativeFeatures {
         }
 
         JsonObject json = new JsonObject();
-        json.addProperty(String.valueOf(Feature.SEND_SMS), isSmsAvailable);
-        json.addProperty(String.valueOf(Feature.COPY_TO_CLIPBOARD), true);
-        json.addProperty(String.valueOf(Feature.SHARE_VIA_FACEBOOK), FacebookSdk.isInitialized());
-        json.addProperty(String.valueOf(Feature.SHARE_VIA_FACEBOOK_MESSENGER), FacebookSdk.isInitialized() && isMessengerInstalled);
-        json.addProperty(String.valueOf(Feature.SHARE_VIA_TWITTER), false);
-        json.addProperty(String.valueOf(Feature.SHARE_VIA_NATIVE_EMAIL), isMailAvailable);
+        json.addProperty(Feature.SEND_SMS.toString(), isSmsAvailable);
+        json.addProperty(Feature.COPY_TO_CLIPBOARD.toString(), true);
+        json.addProperty(Feature.SHARE_VIA_FACEBOOK.toString(), FacebookSdk.isInitialized());
+        json.addProperty(Feature.SHARE_VIA_FACEBOOK_MESSENGER.toString(), FacebookSdk.isInitialized() && isMessengerInstalled);
+        json.addProperty(Feature.SHARE_VIA_TWITTER.toString(), false);
+        json.addProperty(Feature.SHARE_VIA_NATIVE_EMAIL.toString(), isMailAvailable);
         json.addProperty("sdk_version", BuildConfig.VERSION_NAME);
         json.addProperty("sdk_build", BuildConfig.VERSION_CODE);
 
