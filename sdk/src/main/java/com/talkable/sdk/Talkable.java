@@ -4,20 +4,15 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
-import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.facebook.FacebookSdk;
-import com.facebook.messenger.MessengerUtils;
-import com.google.gson.JsonObject;
 import com.talkable.sdk.api.ApiError;
 import com.talkable.sdk.interfaces.Callback2;
 import com.talkable.sdk.interfaces.TalkableCallback;
@@ -31,14 +26,13 @@ import com.talkable.sdk.models.Purchase;
 import com.talkable.sdk.models.VisitorOffer;
 import com.talkable.sdk.utils.FacebookUtils;
 import com.talkable.sdk.utils.IncorrectInstallationException;
-import com.talkable.sdk.utils.JsonUtils;
 import com.talkable.sdk.utils.ManifestInfo;
+import com.talkable.sdk.utils.NativeFeatures;
 import com.talkable.sdk.utils.TalkableOfferLoadException;
 import com.talkable.sdk.utils.UriUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -69,17 +63,9 @@ public class Talkable {
 
     public static final String ERROR_REASON_SITE_NOT_FOUND = "SITE_NOT_FOUND";
 
-    public static final String FEATURE_SEND_SMS = "send_sms";
-    public static final String FEATURE_COPY_TO_CLIPBOARD = "copy_to_clipboard";
-    public static final String FEATURE_SHARE_VIA_NATIVE_EMAIL = "share_via_native_mail";
-    public static final String FEATURE_SHARE_VIA_TWITTER = "share_via_twitter";
-    public static final String FEATURE_SHARE_VIA_FACEBOOK = "share_via_facebook";
-    public static final String FEATURE_SHARE_VIA_FACEBOOK_MESSENGER = "share_via_facebook_messenger";
-
     private static OkHttpClient httpClient;
     private static String server;
     private static String siteSlug;
-    private static JsonObject nativeFeatures;
     private static String defaultUserAgent;
     private static String debugDeviceId;
     private static Map<String, String> credentialsMap;
@@ -136,7 +122,7 @@ public class Talkable {
         if (FacebookSdk.isInitialized()) {
             FacebookUtils.initialize();
         }
-        setNativeFeatures(context);
+        NativeFeatures.initialize(context);
     }
 
     private static void loadConfig(Context context) {
@@ -183,54 +169,9 @@ public class Talkable {
         }
     }
 
-    private static void setNativeFeatures(Context context) {
-        Boolean isSmsAvailable = false;
-        Boolean isMessengerInstalled = false;
-        Boolean isMailAvailable = false;
-
-        if (context != null) {
-            if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY) &&
-                    ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getSimState() == TelephonyManager.SIM_STATE_READY) {
-                isSmsAvailable = true;
-            }
-
-            isMessengerInstalled = MessengerUtils.hasMessengerInstalled(context);
-
-            Intent sendNativeMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
-            List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(sendNativeMailIntent, 0);// .isEmpty();
-            if (!resolveInfos.isEmpty()) {
-                // for some android emulators there is always "com.android.fallback/.Fallback" intent
-                // https://stackoverflow.com/a/31052350
-                List<ResolveInfo> filtered = new ArrayList<ResolveInfo>();
-                for (ResolveInfo info : resolveInfos) {
-                    String packageName = info.activityInfo.packageName;
-                    if (!packageName.toLowerCase().contains("fallback")) {
-                        filtered.add(info);
-                    }
-                }
-                isMailAvailable = !filtered.isEmpty();
-            }
-        }
-
-        JsonObject json = new JsonObject();
-        json.addProperty(FEATURE_SEND_SMS, isSmsAvailable);
-        json.addProperty(FEATURE_COPY_TO_CLIPBOARD, true);
-        json.addProperty(FEATURE_SHARE_VIA_FACEBOOK, FacebookSdk.isInitialized());
-        json.addProperty(FEATURE_SHARE_VIA_FACEBOOK_MESSENGER, FacebookSdk.isInitialized() && isMessengerInstalled);
-        json.addProperty(FEATURE_SHARE_VIA_TWITTER, false);
-        json.addProperty(FEATURE_SHARE_VIA_NATIVE_EMAIL, isMailAvailable);
-        json.addProperty("sdk_version", BuildConfig.VERSION_NAME);
-        json.addProperty("sdk_build", BuildConfig.VERSION_CODE);
-
-        nativeFeatures = json;
-    }
-
+    @Deprecated
     public static String getNativeFeatures() {
-        return nativeFeatures.toString();
-    }
-
-    public static boolean isNativeFeatureAvailable(String feature) {
-        return JsonUtils.getJsonBoolean(nativeFeatures, feature);
+        return NativeFeatures.getFeatures();
     }
 
     public static OkHttpClient getHttpClient() {
@@ -298,7 +239,7 @@ public class Talkable {
         final Request request = new Request.Builder()
                 .url(originUrl)
                 .header("User-Agent", getUserAgent())
-                .header(TALKABLE_FEATURES_HEADER, getNativeFeatures())
+                .header(TALKABLE_FEATURES_HEADER, NativeFeatures.getFeatures())
                 .get()
                 .build();
 

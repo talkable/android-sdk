@@ -35,6 +35,8 @@ import com.talkable.sdk.models.SharingChannel;
 import com.talkable.sdk.utils.ContactsImporter;
 import com.talkable.sdk.utils.FacebookUtils;
 import com.talkable.sdk.utils.JsonUtils;
+import com.talkable.sdk.utils.NativeFeatures;
+import com.talkable.sdk.utils.NativeFeatures.Feature;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -225,7 +227,8 @@ public class TalkableOfferFragment extends Fragment {
     //-----------+
 
     public void shareOfferViaNativeMail(String subject, String message, String claimUrl) {
-        if (!Talkable.isNativeFeatureAvailable(Talkable.FEATURE_SHARE_VIA_NATIVE_EMAIL)) {
+        if (!NativeFeatures.isAvailable(Feature.SHARE_VIA_NATIVE_EMAIL)) {
+            Log.d(Talkable.TAG, "Native feature called when not available: share_via_native_mail");
             return;
         }
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
@@ -239,7 +242,8 @@ public class TalkableOfferFragment extends Fragment {
     }
 
     public void shareOfferViaSms(String recipients, String message, String claimUrl) {
-        if (!Talkable.isNativeFeatureAvailable(Talkable.FEATURE_SEND_SMS)) {
+        if (!NativeFeatures.isAvailable(Feature.SEND_SMS)) {
+            Log.d(Talkable.TAG, "Native feature called when not available: send_sms");
             return;
         }
         String uriString = "sms:";
@@ -336,7 +340,7 @@ public class TalkableOfferFragment extends Fragment {
 
     private Map<String, String> getTalkableHeaders() {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put(Talkable.TALKABLE_FEATURES_HEADER, Talkable.getNativeFeatures());
+        headers.put(Talkable.TALKABLE_FEATURES_HEADER, NativeFeatures.getFeatures());
         return headers;
     }
 
