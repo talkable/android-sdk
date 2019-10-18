@@ -3,6 +3,7 @@ package com.talkable.sdk;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -34,12 +35,12 @@ import com.talkable.sdk.models.SharingChannel;
 import com.talkable.sdk.utils.ContactsImporter;
 import com.talkable.sdk.utils.FacebookUtils;
 import com.talkable.sdk.utils.JsonUtils;
+import com.talkable.sdk.utils.NativeFeatures;
+import com.talkable.sdk.utils.NativeFeatures.Feature;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.app.Activity;
 
 public class TalkableOfferFragment extends Fragment {
     public static final String OFFER_CODE_PARAM = "offer_code_param";
@@ -226,6 +227,10 @@ public class TalkableOfferFragment extends Fragment {
     //-----------+
 
     public void shareOfferViaNativeMail(String subject, String message, String claimUrl) {
+        if (!NativeFeatures.isAvailable(Feature.SHARE_VIA_NATIVE_EMAIL)) {
+            Log.d(Talkable.TAG, "Native feature called when not available: share_via_native_mail");
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
         if (subject != null) {
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
@@ -237,6 +242,10 @@ public class TalkableOfferFragment extends Fragment {
     }
 
     public void shareOfferViaSms(String recipients, String message, String claimUrl) {
+        if (!NativeFeatures.isAvailable(Feature.SEND_SMS)) {
+            Log.d(Talkable.TAG, "Native feature called when not available: send_sms");
+            return;
+        }
         String uriString = "sms:";
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse(uriString));
         if (message != null && claimUrl != null && !message.contains(claimUrl)) {
@@ -331,7 +340,7 @@ public class TalkableOfferFragment extends Fragment {
 
     private Map<String, String> getTalkableHeaders() {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put(Talkable.TALKABLE_FEATURES_HEADER, Talkable.getNativeFeatures());
+        headers.put(Talkable.TALKABLE_FEATURES_HEADER, NativeFeatures.getFeatures());
         return headers;
     }
 

@@ -4,19 +4,15 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
-import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.facebook.FacebookSdk;
-import com.facebook.messenger.MessengerUtils;
-import com.google.gson.JsonObject;
 import com.talkable.sdk.api.ApiError;
 import com.talkable.sdk.interfaces.Callback2;
 import com.talkable.sdk.interfaces.TalkableCallback;
@@ -31,6 +27,7 @@ import com.talkable.sdk.models.VisitorOffer;
 import com.talkable.sdk.utils.FacebookUtils;
 import com.talkable.sdk.utils.IncorrectInstallationException;
 import com.talkable.sdk.utils.ManifestInfo;
+import com.talkable.sdk.utils.NativeFeatures;
 import com.talkable.sdk.utils.TalkableOfferLoadException;
 import com.talkable.sdk.utils.UriUtils;
 
@@ -67,7 +64,10 @@ public class Talkable {
     public static final String ERROR_REASON_SITE_NOT_FOUND = "SITE_NOT_FOUND";
 
     private static OkHttpClient httpClient;
-    private static String server, siteSlug, nativeFeatures, defaultUserAgent, debugDeviceId;
+    private static String server;
+    private static String siteSlug;
+    private static String defaultUserAgent;
+    private static String debugDeviceId;
     private static Map<String, String> credentialsMap;
     private static Boolean initialized = false, debug = false;
 
@@ -122,7 +122,7 @@ public class Talkable {
         if (FacebookSdk.isInitialized()) {
             FacebookUtils.initialize();
         }
-        setNativeFeatures(context);
+        NativeFeatures.initialize(context);
     }
 
     private static void loadConfig(Context context) {
@@ -169,32 +169,9 @@ public class Talkable {
         }
     }
 
-    private static void setNativeFeatures(Context context) {
-        Boolean isSmsAvailable = false;
-        Boolean isMessengerInstalled = false;
-
-        if (context != null) {
-            if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY) &&
-                    ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getSimState() == TelephonyManager.SIM_STATE_READY) {
-                isSmsAvailable = true;
-            }
-            isMessengerInstalled = MessengerUtils.hasMessengerInstalled(context);
-        }
-
-        JsonObject json = new JsonObject();
-        json.addProperty("send_sms", isSmsAvailable);
-        json.addProperty("copy_to_clipboard", true);
-        json.addProperty("share_via_facebook", FacebookSdk.isInitialized());
-        json.addProperty("share_via_facebook_messenger", FacebookSdk.isInitialized() && isMessengerInstalled);
-        json.addProperty("share_via_twitter", false);
-        json.addProperty("sdk_version", BuildConfig.VERSION_NAME);
-        json.addProperty("sdk_build", BuildConfig.VERSION_CODE);
-
-        nativeFeatures = json.toString();
-    }
-
+    @Deprecated
     public static String getNativeFeatures() {
-        return nativeFeatures;
+        return NativeFeatures.getFeatures();
     }
 
     public static OkHttpClient getHttpClient() {
@@ -262,7 +239,7 @@ public class Talkable {
         final Request request = new Request.Builder()
                 .url(originUrl)
                 .header("User-Agent", getUserAgent())
-                .header(TALKABLE_FEATURES_HEADER, getNativeFeatures())
+                .header(TALKABLE_FEATURES_HEADER, NativeFeatures.getFeatures())
                 .get()
                 .build();
 
