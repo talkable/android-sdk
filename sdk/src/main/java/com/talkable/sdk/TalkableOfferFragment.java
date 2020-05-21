@@ -323,6 +323,10 @@ public class TalkableOfferFragment extends Fragment {
         FacebookUtils.shareViaMessenger(this, claimUrl);
     }
 
+    public void shareOfferViaWhatsApp(String message) {
+        // TODO: implement
+    }
+
     public void copyToClipboard(String string) {
         if (getActivity() == null) return;
 
