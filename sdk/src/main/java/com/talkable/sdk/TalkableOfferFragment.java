@@ -119,7 +119,7 @@ public class TalkableOfferFragment extends Fragment {
         initializeWebView();
 
         OfferWebData offerWebData = TalkablePreferencesStore.getOfferWebData(mOfferCode);
-        mWebView.loadDataWithBaseURL(offerWebData.getOriginUrl(), offerWebData.getHtml(), "text/html", "utf-8", null);
+        mWebView.loadDataWithBaseURL(Talkable.getServer(), offerWebData.getHtml(), "text/html", "utf-8", offerWebData.getOriginUrl());
     }
 
     @Override
