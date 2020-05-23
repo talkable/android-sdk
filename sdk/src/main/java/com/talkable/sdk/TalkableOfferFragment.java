@@ -47,6 +47,7 @@ public class TalkableOfferFragment extends Fragment {
     public static final int REQUEST_CODE_SEND_SMS = 1;
     public static final int REQUEST_CODE_READ_CONTACTS = 2;
     public static final int REQUEST_CODE_SEND_NATIVE_MAIL = 3;
+    public static final int REQUEST_CODE_SEND_WHATSAPP = 4;
 
     private WebView mWebView;
     private WebAppInterface mWebAppInterface;
@@ -112,7 +113,7 @@ public class TalkableOfferFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         initializeWebView();
@@ -137,6 +138,10 @@ public class TalkableOfferFragment extends Fragment {
 
         if (requestCode == REQUEST_CODE_SEND_NATIVE_MAIL && resultCode == Activity.RESULT_OK) {
             shareSucceeded(SharingChannel.NATIVE_MAIL.toString());
+        }
+
+        if (requestCode == REQUEST_CODE_SEND_WHATSAPP) {
+            shareSucceeded(SharingChannel.WHATSAPP.toString());
         }
     }
 
@@ -323,8 +328,18 @@ public class TalkableOfferFragment extends Fragment {
         FacebookUtils.shareViaMessenger(this, claimUrl);
     }
 
-    public void shareOfferViaWhatsApp(String message) {
-        // TODO: implement
+    public void shareOfferViaWhatsapp(String message) {
+        if (!NativeFeatures.isAvailable(Feature.SHARE_VIA_WHATSAPP)) {
+            Log.d(Talkable.TAG, "Native feature called when not available: share_via_whatsapp");
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.setPackage("com.whatsapp");
+        if (message != null) {
+            intent.putExtra(Intent.EXTRA_TEXT, message);
+        }
+        startActivityForResult(intent, REQUEST_CODE_SEND_WHATSAPP);
     }
 
     public void copyToClipboard(String string) {
@@ -332,7 +347,9 @@ public class TalkableOfferFragment extends Fragment {
 
         ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(string, string);
-        clipboard.setPrimaryClip(clip);
+        if (clipboard != null) {
+            clipboard.setPrimaryClip(clip);
+        }
     }
 
     public void popupOpened() {
