@@ -72,7 +72,7 @@ class WebAppInterface {
                             JsonUtils.getJsonString(json, "message"));
                     break;
                 case "share_offer_via_whatsapp":
-                    talkableOfferFragment.shareOfferViaWhatsapp(
+                    talkableOfferFragment.shareOfferViaWhatsApp(
                             JsonUtils.getJsonString(json, "message"));
                     break;
                 case "share_offer_via_sms":

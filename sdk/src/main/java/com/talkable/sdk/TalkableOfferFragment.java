@@ -328,7 +328,7 @@ public class TalkableOfferFragment extends Fragment {
         FacebookUtils.shareViaMessenger(this, claimUrl);
     }
 
-    public void shareOfferViaWhatsapp(String message) {
+    public void shareOfferViaWhatsApp(String message) {
         if (!NativeFeatures.isAvailable(Feature.SHARE_VIA_WHATSAPP)) {
             Log.d(Talkable.TAG, "Native feature called when not available: share_via_whatsapp");
             return;
