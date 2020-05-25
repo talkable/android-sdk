@@ -140,7 +140,7 @@ public class TalkableOfferFragment extends Fragment {
             shareSucceeded(SharingChannel.NATIVE_MAIL.toString());
         }
 
-        if (requestCode == REQUEST_CODE_SEND_WHATSAPP) {
+        if (requestCode == REQUEST_CODE_SEND_WHATSAPP && resultCode == Activity.RESULT_OK) {
             shareSucceeded(SharingChannel.WHATSAPP.toString());
         }
     }
