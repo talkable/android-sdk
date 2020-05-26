@@ -24,7 +24,8 @@ public class NativeFeatures {
         SHARE_VIA_NATIVE_EMAIL("share_via_native_mail"),
         SHARE_VIA_TWITTER("share_via_twitter"),
         SHARE_VIA_FACEBOOK("share_via_facebook"),
-        SHARE_VIA_FACEBOOK_MESSENGER("share_via_facebook_messenger");
+        SHARE_VIA_FACEBOOK_MESSENGER("share_via_facebook_messenger"),
+        SHARE_VIA_WHATSAPP("share_via_whatsapp");
 
         private final String identifier;
 
@@ -42,9 +43,10 @@ public class NativeFeatures {
     }
 
     public static void initialize(Context context) {
-        Boolean isSmsAvailable = false;
-        Boolean isMessengerInstalled = false;
-        Boolean isMailAvailable = false;
+        boolean isSmsAvailable = false;
+        boolean isMessengerInstalled = false;
+        boolean isMailAvailable = false;
+        boolean isWhatsAppAvailable = false;
 
         if (context != null) {
             if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY) &&
@@ -53,13 +55,14 @@ public class NativeFeatures {
             }
 
             isMessengerInstalled = MessengerUtils.hasMessengerInstalled(context);
+            isWhatsAppAvailable  = isPackageInstalled("com.whatsapp", context);
 
             Intent sendNativeMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
-            List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(sendNativeMailIntent, 0);// .isEmpty();
+            List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(sendNativeMailIntent, 0);
             if (!resolveInfos.isEmpty()) {
                 // for some android emulators there is always "com.android.fallback/.Fallback" intent
                 // https://stackoverflow.com/a/31052350
-                List<ResolveInfo> filtered = new ArrayList<ResolveInfo>();
+                List<ResolveInfo> filtered = new ArrayList<>();
                 for (ResolveInfo info : resolveInfos) {
                     String packageName = info.activityInfo.packageName;
                     if (!packageName.toLowerCase().contains("fallback")) {
@@ -77,6 +80,7 @@ public class NativeFeatures {
         json.addProperty(Feature.SHARE_VIA_FACEBOOK_MESSENGER.toString(), FacebookSdk.isInitialized() && isMessengerInstalled);
         json.addProperty(Feature.SHARE_VIA_TWITTER.toString(), false);
         json.addProperty(Feature.SHARE_VIA_NATIVE_EMAIL.toString(), isMailAvailable);
+        json.addProperty(Feature.SHARE_VIA_WHATSAPP.toString(), isWhatsAppAvailable);
         json.addProperty("sdk_version", BuildConfig.VERSION_NAME);
         json.addProperty("sdk_build", BuildConfig.VERSION_CODE);
 
@@ -89,5 +93,13 @@ public class NativeFeatures {
 
     public static boolean isAvailable(Feature feature) {
         return JsonUtils.getJsonBoolean(features, feature.toString());
+    }
+
+    private static boolean isPackageInstalled(String packageName, Context context) {
+        try {
+            return context.getPackageManager().getApplicationInfo(packageName, 0).enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }

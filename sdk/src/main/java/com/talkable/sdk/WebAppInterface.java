@@ -21,7 +21,7 @@ class WebAppInterface {
         try {
             JsonObject json = new JsonObject();
             if (data.length() > 0) {
-                json = new JsonParser().parse(data).getAsJsonObject();
+                json = JsonParser.parseString(data).getAsJsonObject();
             }
             switch (eventName) {
                 case "put_to_clipboard":
@@ -69,6 +69,10 @@ class WebAppInterface {
                     break;
                 case "share_offer_via_twitter":
                     talkableOfferFragment.shareOfferViaTwitter(
+                            JsonUtils.getJsonString(json, "message"));
+                    break;
+                case "share_offer_via_whatsapp":
+                    talkableOfferFragment.shareOfferViaWhatsApp(
                             JsonUtils.getJsonString(json, "message"));
                     break;
                 case "share_offer_via_sms":

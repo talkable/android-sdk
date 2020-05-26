@@ -6,6 +6,7 @@ public enum SharingChannel {
     @SerializedName("facebook")             FACEBOOK("facebook"),
     @SerializedName("facebook_message")     FACEBOOK_MESSAGE("facebook_message"),
     @SerializedName("twitter")              TWITTER("twitter"),
+    @SerializedName("whatsapp")             WHATSAPP("whatsapp"),
     @SerializedName("linkedin")             LINKEDIN("linkedin"),
     @SerializedName("email")                EMAIL("email"),
     @SerializedName("sms")                  SMS("sms"),
