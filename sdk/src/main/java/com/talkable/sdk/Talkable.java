@@ -53,6 +53,8 @@ public class Talkable {
     public static final String UUID_KEY = "talkable_visitor_uuid";
     public static final String VISITOR_OFFER_KEY = "talkable_visitor_offer_id";
 
+    public static final String API_KEY = "tkbl-api-key-android";
+
     public static final String ARG_OFFER_CODE = "offer_code";
     public static final String ARG_OFFER_FRAGMENT_CLASS = "offer_fragment_class";
 
@@ -361,6 +363,20 @@ public class Talkable {
                     "inside AndroidManifest file");
         }
         siteSlug = newSiteSlug;
+    }
+
+    public static void updateCredentials(String newApiKey, String newSiteSlug) {
+        if (!getDebug()) {
+            throw new IllegalArgumentException("You should specify Api Key and Site Slug inside AndroidManifest file");
+        }
+
+        if (newApiKey == null || newSiteSlug == null || newApiKey.isEmpty() || newSiteSlug.isEmpty()) {
+            throw new IncorrectInstallationException("Api key or Site slug should not be blank or null");
+        }
+
+        credentialsMap.remove(siteSlug);
+        siteSlug = newSiteSlug;
+        credentialsMap.put(siteSlug, newApiKey);
     }
 
     public static boolean getDebug() {
