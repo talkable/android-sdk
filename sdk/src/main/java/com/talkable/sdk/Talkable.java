@@ -53,8 +53,6 @@ public class Talkable {
     public static final String UUID_KEY = "talkable_visitor_uuid";
     public static final String VISITOR_OFFER_KEY = "talkable_visitor_offer_id";
 
-    public static final String API_KEY = "tkbl-api-key-android";
-
     public static final String ARG_OFFER_CODE = "offer_code";
     public static final String ARG_OFFER_FRAGMENT_CLASS = "offer_fragment_class";
 
