@@ -369,7 +369,7 @@ public class Talkable {
         }
 
         if (newApiKey == null || newSiteSlug == null || newApiKey.isEmpty() || newSiteSlug.isEmpty()) {
-            throw new IncorrectInstallationException("Api key or Site slug should not be blank or null");
+            throw new IllegalArgumentException("Api key or Site slug should not be blank");
         }
 
         credentialsMap.remove(siteSlug);
