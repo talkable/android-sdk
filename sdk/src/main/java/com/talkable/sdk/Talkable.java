@@ -372,7 +372,6 @@ public class Talkable {
             throw new IllegalArgumentException("Api key or Site slug should not be blank");
         }
 
-        credentialsMap.remove(siteSlug);
         credentialsMap.put(newSiteSlug, newApiKey);
         siteSlug = newSiteSlug;
     }
