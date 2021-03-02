@@ -365,7 +365,7 @@ public class Talkable {
 
     public static void updateCredentials(String newApiKey, String newSiteSlug) {
         if (!getDebug()) {
-            throw new IllegalArgumentException("You should specify Api Key and Site Slug inside AndroidManifest file");
+            throw new IllegalStateException("You should specify Api Key and Site Slug inside AndroidManifest file");
         }
 
         if (newApiKey == null || newSiteSlug == null || newApiKey.isEmpty() || newSiteSlug.isEmpty()) {
