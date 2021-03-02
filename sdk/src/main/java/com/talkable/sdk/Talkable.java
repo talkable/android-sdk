@@ -363,6 +363,19 @@ public class Talkable {
         siteSlug = newSiteSlug;
     }
 
+    public static void updateCredentials(String newApiKey, String newSiteSlug) {
+        if (!getDebug()) {
+            throw new IllegalStateException("You should specify Api Key and Site Slug inside AndroidManifest file");
+        }
+
+        if (newApiKey == null || newSiteSlug == null || newApiKey.isEmpty() || newSiteSlug.isEmpty()) {
+            throw new IllegalArgumentException("Api key or Site slug should not be blank");
+        }
+
+        credentialsMap.put(newSiteSlug, newApiKey);
+        siteSlug = newSiteSlug;
+    }
+
     public static boolean getDebug() {
         return debug;
     }
