@@ -373,8 +373,8 @@ public class Talkable {
         }
 
         credentialsMap.remove(siteSlug);
+        credentialsMap.put(newSiteSlug, newApiKey);
         siteSlug = newSiteSlug;
-        credentialsMap.put(siteSlug, newApiKey);
     }
 
     public static boolean getDebug() {
