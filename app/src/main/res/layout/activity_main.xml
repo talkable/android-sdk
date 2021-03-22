@@ -135,6 +135,37 @@
                     android:text="" />
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/siteSlugTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/offerIDTextLayout"
+                android:hint="Site Slug">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/siteSlugText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/apiKeyTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/siteSlugTextLayout"
+                android:hint="Api Key">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/apiKeyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/eventBtn"
@@ -142,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/offerIDTextLayout"
+                android:layout_below="@+id/apiKeyTextLayout"
                 android:layout_marginTop="5pt"
                 android:onClick="onEventClick"
                 android:text="@string/eventBtnLabel" />
