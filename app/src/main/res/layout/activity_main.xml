@@ -167,13 +167,29 @@
                     android:text="" />
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/serverTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/apiKeyTextLayout"
+                android:hint="Server">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/serverText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="https://www.talkable.com" />
+            </android.support.design.widget.TextInputLayout>
+
             <Button
                 android:id="@+id/eventBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/apiKeyTextLayout"
+                android:layout_below="@+id/serverTextLayout"
                 android:layout_marginTop="5pt"
                 android:onClick="onEventClick"
                 android:text="@string/eventBtnLabel" />

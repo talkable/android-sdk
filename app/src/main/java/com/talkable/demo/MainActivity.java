@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 import static com.talkable.sdk.Talkable.UUID_KEY;
 import static com.talkable.sdk.Talkable.VISITOR_OFFER_KEY;
+import static com.talkable.sdk.Talkable.DEFAULT_SERVER;
 
 public class MainActivity extends Activity {
 
@@ -37,12 +38,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         Talkable.trackAppOpen(this);
+        Talkable.setServer(DEFAULT_SERVER);
     }
 
     public void onAffiliateMemberClick(View view) {
-        Talkable.setServer("https://www.talkable.com");
         Talkable.setSiteSlug("android");
-        setApiKeyAndSiteSlugIfNeeded();
+        updateTalkableCredentials();
 
         AffiliateMember affiliateMember = new AffiliateMember(getCustomer());
         affiliateMember.setCampaignTag("android-fragments");
@@ -60,7 +61,7 @@ public class MainActivity extends Activity {
     }
 
     public void onPurchaseClick(View view) {
-        setApiKeyAndSiteSlugIfNeeded();
+        updateTalkableCredentials();
         TalkableApi.createOrigin(buildPurchase(), new Callback2<Origin, Offer>() {
             @Override
             public void onSuccess(Origin purchase, Offer offer) {
@@ -103,7 +104,8 @@ public class MainActivity extends Activity {
 
         Event event = new Event(eventNumber, eventCategory, subtotal, coupons);
         event.setCustomer(getCustomer());
-        setApiKeyAndSiteSlugIfNeeded();
+
+        updateTalkableCredentials();
 
         TalkableApi.createOrigin(event, new Callback2<Origin, Offer>() {
             @Override
@@ -121,7 +123,8 @@ public class MainActivity extends Activity {
     public void onAffiliateMemberViaApiClick(View view) {
         AffiliateMember affiliateMember = new AffiliateMember();
         affiliateMember.setCustomer(getCustomer());
-        setApiKeyAndSiteSlugIfNeeded();
+
+        updateTalkableCredentials();
 
         TalkableApi.createOrigin(affiliateMember, new Callback2<Origin, Offer>() {
             @Override
@@ -137,7 +140,7 @@ public class MainActivity extends Activity {
     }
 
     public void getRewardsClick(View view) {
-        setApiKeyAndSiteSlugIfNeeded();
+        updateTalkableCredentials();
 
         TalkableApi.retrieveRewards(new Callback1<Reward[]>() {
             @Override
@@ -207,7 +210,6 @@ public class MainActivity extends Activity {
     }
 
     public void onPostPurchaseClick(View view) {
-        Talkable.setServer("https://www.talkable.com");
         Talkable.setSiteSlug("android");
         setApiKeyAndSiteSlugIfNeeded();
 
@@ -237,9 +239,14 @@ public class MainActivity extends Activity {
             paramsMap.put(VISITOR_OFFER_KEY, offerId);
         }
 
-        setApiKeyAndSiteSlugIfNeeded();
+        updateTalkableCredentials();
 
         TalkableDeepLinking.track(paramsMap);
+    }
+
+    private void updateTalkableCredentials() {
+        setServerIfNeeded();
+        setApiKeyAndSiteSlugIfNeeded();
     }
 
     private void setApiKeyAndSiteSlugIfNeeded() {
@@ -250,6 +257,15 @@ public class MainActivity extends Activity {
 
         if (siteSlug.length() > 0 && apiKey.length() > 0) {
             Talkable.updateCredentials(apiKey, siteSlug);
+        }
+    }
+
+    private void setServerIfNeeded() {
+        EditText serverText = findViewById(R.id.serverText);
+        String server = serverText.getText().toString();
+
+        if (server.length() > 0 && server != DEFAULT_SERVER) {
+            Talkable.setServer(server);
         }
     }
 }
