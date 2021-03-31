@@ -28,7 +28,6 @@ import java.util.HashMap;
 
 import static com.talkable.sdk.Talkable.UUID_KEY;
 import static com.talkable.sdk.Talkable.VISITOR_OFFER_KEY;
-import static com.talkable.sdk.Talkable.DEFAULT_SERVER;
 
 public class MainActivity extends Activity {
 
@@ -38,7 +37,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         Talkable.trackAppOpen(this);
-        Talkable.setServer(DEFAULT_SERVER);
     }
 
     public void onAffiliateMemberClick(View view) {
@@ -211,7 +209,7 @@ public class MainActivity extends Activity {
 
     public void onPostPurchaseClick(View view) {
         Talkable.setSiteSlug("android");
-        setApiKeyAndSiteSlugIfNeeded();
+        updateTalkableCredentials();
 
         Talkable.showOffer(MainActivity.this, buildPurchase(), new TalkableErrorCallback<TalkableOfferLoadException>() {
             @Override
@@ -264,7 +262,7 @@ public class MainActivity extends Activity {
         EditText serverText = findViewById(R.id.serverText);
         String server = serverText.getText().toString();
 
-        if (server.length() > 0 && server != DEFAULT_SERVER) {
+        if (server == null && server.length() > 0) {
             Talkable.setServer(server);
         }
     }
