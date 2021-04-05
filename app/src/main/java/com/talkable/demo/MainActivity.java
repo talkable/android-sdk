@@ -40,8 +40,8 @@ public class MainActivity extends Activity {
     }
 
     public void onAffiliateMemberClick(View view) {
-        Talkable.setSiteSlug("android");
         updateTalkableCredentials();
+        Talkable.setSiteSlug("android");
 
         AffiliateMember affiliateMember = new AffiliateMember(getCustomer());
         affiliateMember.setCampaignTag("android-fragments");
@@ -208,8 +208,8 @@ public class MainActivity extends Activity {
     }
 
     public void onPostPurchaseClick(View view) {
-        Talkable.setSiteSlug("android");
         updateTalkableCredentials();
+        Talkable.setSiteSlug("android");
 
         Talkable.showOffer(MainActivity.this, buildPurchase(), new TalkableErrorCallback<TalkableOfferLoadException>() {
             @Override
