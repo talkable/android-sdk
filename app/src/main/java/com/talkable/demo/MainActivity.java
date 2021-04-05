@@ -243,11 +243,6 @@ public class MainActivity extends Activity {
     }
 
     private void updateTalkableCredentials() {
-        setServerIfNeeded();
-        setApiKeyAndSiteSlugIfNeeded();
-    }
-
-    private void setApiKeyAndSiteSlugIfNeeded() {
         EditText siteSlugText = findViewById(R.id.siteSlugText);
         String siteSlug = siteSlugText.getText().toString();
         EditText apiKeyText = findViewById(R.id.apiKeyText);
@@ -256,13 +251,11 @@ public class MainActivity extends Activity {
         if (siteSlug.length() > 0 && apiKey.length() > 0) {
             Talkable.updateCredentials(apiKey, siteSlug);
         }
-    }
 
-    private void setServerIfNeeded() {
         EditText serverText = findViewById(R.id.serverText);
         String server = serverText.getText().toString();
 
-        if (server == null && server.length() > 0) {
+        if (server != null && server.length() > 0) {
             Talkable.setServer(server);
         }
     }
