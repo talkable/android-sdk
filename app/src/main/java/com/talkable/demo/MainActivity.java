@@ -247,19 +247,13 @@ public class MainActivity extends Activity {
     }
 
     private void updateTalkableCredentials() {
-        EditText siteSlugText = findViewById(R.id.siteSlugText);
-        String siteSlug = siteSlugText.getText().toString();
-        EditText apiKeyText = findViewById(R.id.apiKeyText);
-        String apiKey = apiKeyText.getText().toString();
+        String siteSlug = ((EditText)findViewById(R.id.siteSlugText)).getText().toString();
+        String apiKey = ((EditText)findViewById(R.id.apiKeyText)).getText().toString();
+        String server = ((EditText)findViewById(R.id.serverText)).getText().toString();
 
         if (siteSlug.length() > 0 && apiKey.length() > 0) {
             Talkable.updateCredentials(apiKey, siteSlug);
-        } else if (siteSlug.length() > 0) {
-            Talkable.setSiteSlug(siteSlug);
         }
-
-        EditText serverText = findViewById(R.id.serverText);
-        String server = serverText.getText().toString();
 
         if (server != null && server.length() > 0) {
             Talkable.setServer(server);
