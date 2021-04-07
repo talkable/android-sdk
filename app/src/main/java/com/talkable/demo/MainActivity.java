@@ -41,10 +41,9 @@ public class MainActivity extends Activity {
 
     public void onAffiliateMemberClick(View view) {
         updateTalkableCredentials();
-        Talkable.setSiteSlug("android");
 
         AffiliateMember affiliateMember = new AffiliateMember(getCustomer());
-        affiliateMember.setCampaignTag("android-fragments");
+        affiliateMember.setCampaignTag(campaignTag());
         Talkable.showOffer(this, affiliateMember, OverridenTalkableOfferFragment.class, new TalkableErrorCallback<TalkableOfferLoadException>() {
             @Override
             public void onError(final TalkableOfferLoadException error) {
@@ -60,6 +59,7 @@ public class MainActivity extends Activity {
 
     public void onPurchaseClick(View view) {
         updateTalkableCredentials();
+
         TalkableApi.createOrigin(buildPurchase(), new Callback2<Origin, Offer>() {
             @Override
             public void onSuccess(Origin purchase, Offer offer) {
@@ -89,12 +89,14 @@ public class MainActivity extends Activity {
         item.setUrl("http://test.com/product.html");
 
         purchase.addItem(item);
-        purchase.setCampaignTag("post-purchase-fragments");
+        purchase.setCampaignTag(campaignTag());
 
         return purchase;
     }
 
     public void onEventClick(View view) {
+        updateTalkableCredentials();
+
         String eventNumber = getOrderNumber();
         String eventCategory = getEventCategory();
         Double subtotal = getSubtotal();
@@ -102,8 +104,6 @@ public class MainActivity extends Activity {
 
         Event event = new Event(eventNumber, eventCategory, subtotal, coupons);
         event.setCustomer(getCustomer());
-
-        updateTalkableCredentials();
 
         TalkableApi.createOrigin(event, new Callback2<Origin, Offer>() {
             @Override
@@ -119,10 +119,10 @@ public class MainActivity extends Activity {
     }
 
     public void onAffiliateMemberViaApiClick(View view) {
+        updateTalkableCredentials();
+
         AffiliateMember affiliateMember = new AffiliateMember();
         affiliateMember.setCustomer(getCustomer());
-
-        updateTalkableCredentials();
 
         TalkableApi.createOrigin(affiliateMember, new Callback2<Origin, Offer>() {
             @Override
@@ -197,6 +197,11 @@ public class MainActivity extends Activity {
         return text.getText().toString();
     }
 
+    private String campaignTag() {
+        EditText text = findViewById(R.id.campaignTagText);
+        return text.getText().toString();
+    }
+
     private void showToast(final String text) {
         final Activity activity = this;
         runOnUiThread(new Runnable() {
@@ -209,7 +214,6 @@ public class MainActivity extends Activity {
 
     public void onPostPurchaseClick(View view) {
         updateTalkableCredentials();
-        Talkable.setSiteSlug("android");
 
         Talkable.showOffer(MainActivity.this, buildPurchase(), new TalkableErrorCallback<TalkableOfferLoadException>() {
             @Override
@@ -225,6 +229,8 @@ public class MainActivity extends Activity {
     }
 
     public void onDeepLinkingClick(View view) {
+        updateTalkableCredentials();
+
         EditText webUuidText = findViewById(R.id.webUUIDText);
         String webUuid = webUuidText.getText().toString();
         EditText offerIdText = findViewById(R.id.offerIDText);
@@ -237,8 +243,6 @@ public class MainActivity extends Activity {
             paramsMap.put(VISITOR_OFFER_KEY, offerId);
         }
 
-        updateTalkableCredentials();
-
         TalkableDeepLinking.track(paramsMap);
     }
 
@@ -250,6 +254,8 @@ public class MainActivity extends Activity {
 
         if (siteSlug.length() > 0 && apiKey.length() > 0) {
             Talkable.updateCredentials(apiKey, siteSlug);
+        } else if (siteSlug.length() > 0) {
+            Talkable.setSiteSlug(siteSlug);
         }
 
         EditText serverText = findViewById(R.id.serverText);

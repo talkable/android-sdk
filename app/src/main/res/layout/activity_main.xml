@@ -20,13 +20,78 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/serverParamsTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="SERVER PARAMS"
+                android:textStyle="bold" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/serverTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/serverParamsTextView"
+                android:hint="Server">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/serverText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="https://www.talkable.com" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/apiKeyTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/serverTextLayout"
+                android:hint="Api Key">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/apiKeyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/siteSlugTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/apiKeyTextLayout"
+                android:hint="Site Slug">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/siteSlugText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="android" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/customerParamsTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/siteSlugTextLayout"
+                android:gravity="center"
+                android:text="CUSTOMER PARAMS"
+                android:textStyle="bold" />
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/emailTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
+                android:layout_below="@+id/customerParamsTextView"
                 android:hint="@string/emailTextLabel">
 
                 <android.support.design.widget.TextInputEditText
@@ -37,13 +102,22 @@
                     android:text="@string/emailTextDefault" />
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:id="@+id/originParamsTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailTextLayout"
+                android:gravity="center"
+                android:text="ORIGIN PARAMS"
+                android:textStyle="bold" />
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/orderNumberTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/emailTextLayout"
+                android:layout_below="@+id/originParamsTextView"
                 android:hint="@string/orderNumberTextLabel">
 
                 <android.support.design.widget.TextInputEditText
@@ -88,12 +162,28 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/eventCategoryTextLayout"
+                android:id="@+id/campaignTagLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/subtotalTextLayout"
+                android:hint="Campaign Tag">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/campaignTagText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/eventCategoryTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/campaignTagLayout"
                 android:hint="@string/eventCategoryTextLabel">
 
                 <android.support.design.widget.TextInputEditText
@@ -103,13 +193,22 @@
                     android:text="@string/eventCategoryTextDefault" />
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:id="@+id/deepLinkingParamsTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/eventCategoryTextLayout"
+                android:gravity="center"
+                android:text="DEEP LINKING PARAMS"
+                android:textStyle="bold" />
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/webUUIDTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/eventCategoryTextLayout"
+                android:layout_below="@+id/deepLinkingParamsTextView"
                 android:hint="@string/webUUIDTextLabel">
 
                 <android.support.design.widget.TextInputEditText
@@ -135,53 +234,14 @@
                     android:text="" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/siteSlugTextLayout"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/actionsTextView"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/offerIDTextLayout"
-                android:hint="Site Slug">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/siteSlugText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/apiKeyTextLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/siteSlugTextLayout"
-                android:hint="Api Key">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/apiKeyText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/serverTextLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/apiKeyTextLayout"
-                android:hint="Server">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/serverText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="https://www.talkable.com" />
-            </android.support.design.widget.TextInputLayout>
+                android:gravity="center"
+                android:text="ACTIONS"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/eventBtn"
@@ -189,7 +249,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/serverTextLayout"
+                android:layout_below="@+id/actionsTextView"
                 android:layout_marginTop="5pt"
                 android:onClick="onEventClick"
                 android:text="@string/eventBtnLabel" />
