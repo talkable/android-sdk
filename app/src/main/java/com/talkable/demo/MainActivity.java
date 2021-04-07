@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
         updateTalkableCredentials();
 
         AffiliateMember affiliateMember = new AffiliateMember(getCustomer());
-        affiliateMember.setCampaignTag(campaignTag());
+        affiliateMember.setCampaignTag(getCampaignTag());
         Talkable.showOffer(this, affiliateMember, OverridenTalkableOfferFragment.class, new TalkableErrorCallback<TalkableOfferLoadException>() {
             @Override
             public void onError(final TalkableOfferLoadException error) {
@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
         item.setUrl("http://test.com/product.html");
 
         purchase.addItem(item);
-        purchase.setCampaignTag(campaignTag());
+        purchase.setCampaignTag(getCampaignTag());
 
         return purchase;
     }
@@ -197,7 +197,7 @@ public class MainActivity extends Activity {
         return text.getText().toString();
     }
 
-    private String campaignTag() {
+    private String getCampaignTag() {
         EditText text = findViewById(R.id.campaignTagText);
         return text.getText().toString();
     }
@@ -255,7 +255,7 @@ public class MainActivity extends Activity {
             Talkable.updateCredentials(apiKey, siteSlug);
         }
 
-        if (server != null && server.length() > 0) {
+        if (server.length() > 0) {
             Talkable.setServer(server);
         }
     }
