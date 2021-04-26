@@ -174,7 +174,7 @@
                     android:id="@+id/campaignTagText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="" />
+                    android:text="android" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout

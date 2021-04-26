@@ -36,6 +36,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ((EditText)findViewById(R.id.apiKeyText)).setText(Talkable.getApiKey());
+
         Talkable.trackAppOpen(this);
     }
 
