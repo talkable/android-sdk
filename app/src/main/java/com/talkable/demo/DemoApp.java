@@ -8,6 +8,6 @@ public class DemoApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Talkable.initialize(this);
+        Talkable.initialize(this,null,true,null);
     }
 }
