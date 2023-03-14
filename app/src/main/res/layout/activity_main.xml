@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,15 +30,15 @@
                 android:layout_alignParentTop="true"
                 android:hint="@string/emailTextLabel">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/emailText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:text="@string/emailTextDefault" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/orderNumberTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,15 +47,15 @@
                 android:layout_below="@+id/emailTextLayout"
                 android:hint="@string/orderNumberTextLabel">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/orderNumberText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:text="@string/orderNumberTextDefault" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/couponTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,14 +64,14 @@
                 android:layout_below="@+id/orderNumberTextLayout"
                 android:hint="@string/couponTextLabel">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/couponText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/couponTextDefault" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/subtotalTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,15 +80,15 @@
                 android:layout_below="@+id/couponTextLayout"
                 android:hint="@string/subtotalTextLabel">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/subtotalText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:text="@string/subtotalTextDefault" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/eventCategoryTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,14 +97,14 @@
                 android:layout_below="@+id/subtotalTextLayout"
                 android:hint="@string/eventCategoryTextLabel">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/eventCategoryText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/eventCategoryTextDefault" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/webUUIDTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,14 +113,14 @@
                 android:layout_below="@+id/eventCategoryTextLayout"
                 android:hint="@string/webUUIDTextLabel">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/webUUIDText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/offerIDTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,12 +129,12 @@
                 android:layout_below="@+id/webUUIDTextLayout"
                 android:hint="@string/offerIDTextLabel">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/offerIDText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <Button

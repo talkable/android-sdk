@@ -13,13 +13,13 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion 27
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.talkable.demo"
         minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 33
-        versionName "0.5.2"
+        targetSdkVersion 31
+        versionCode 34
+        versionName "0.5.3"
     }
     buildTypes {
         release {
@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(path: ':sdk')
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
 }

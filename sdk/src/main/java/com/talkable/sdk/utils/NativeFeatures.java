@@ -69,6 +69,7 @@ public class NativeFeatures {
                         filtered.add(info);
                     }
                 }
+                // TODO: not working properly
                 isMailAvailable = !filtered.isEmpty();
             }
         }
