@@ -42,4 +42,4 @@ captures/
 *.jks
 
 # Keys and passwords
-keystore.properties
+/keystore.properties

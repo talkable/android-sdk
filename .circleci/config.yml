@@ -1,35 +1,30 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/android:api-27-alpha
+      - auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_ACCESS_TOKEN
+        image: cimg/android:2023.04
         environment:
+          JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
           JVM_OPTS: -Xmx3200m
-
-    working_directory: ~/android-sdk
 
     steps:
       - checkout
       - run:
-          name: Create configuration files
-          command: |
-            touch api_keys.properties
-            cat > keystore.properties << EOL
-            keyAlias = circleci
-            keyPassword = circleci
-            storeFile = ./../keystore.jks
-            storePassword = circleci
-            EOL
+          name: Copy configuration files
+          command: cp .circleci/config/* .
 
       - restore_cache:
-          key: v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+          key: v2-dependencies-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
       - run:
           name: Download dependencies
           command: ./gradlew androidDependencies
       - save_cache:
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+          key: v2-dependencies-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
       - run:
           name: Run tests
@@ -45,3 +40,10 @@ jobs:
           path: ~/junit
       - store_artifacts:
           path: ~/junit
+
+workflows:
+  workflow:
+    jobs:
+      - build:
+          context:
+            - org-global
