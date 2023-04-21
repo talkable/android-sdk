@@ -7,7 +7,7 @@ import com.talkable.sdk.Talkable;
 public class DemoApp extends Application {
     @Override
     public void onCreate() {
-        super.onCreate();
+        super.onCreate(); // dummy
         Talkable.initialize(this);
     }
 }
