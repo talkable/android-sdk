@@ -56,7 +56,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.2.0' // update to a new version when https://github.com/square/okhttp/issues/3928 will be fixed
     implementation 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-android-sdk:14.1.1'
     implementation 'com.google.code.gson:gson:2.8.+'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

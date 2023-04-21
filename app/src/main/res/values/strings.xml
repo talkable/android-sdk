@@ -16,7 +16,8 @@
     <string name="affiliateMemberViaApiBtnLabel">Affiliate Member via API</string>
     <string name="deepLinkingBtnLabel">Handle Deep Linking Params</string>
 
-    <string name="facebook_app_id">549932915208564</string>
+    <string name="facebook_app_id">784708545842451</string>
+    <string name="facebook_client_token">1898aa5e79cdc62cf0664fad34fe0e74</string>
     <string name="couponTextDefault">TKBL_COUPON</string>
     <string name="orderNumberTextDefault">12345</string>
     <string name="emailTextDefault">user@example.com</string>
