@@ -2,12 +2,8 @@ package com.talkable.sdk;
 
 import android.content.Context;
 import android.provider.Settings;
-import android.util.Log;
 
-import com.talkable.sdk.api.ApiError;
-import com.talkable.sdk.interfaces.Callback1;
 import com.talkable.sdk.models.OfferWebData;
-import com.talkable.sdk.models.Visitor;
 import com.talkable.sdk.utils.PreferencesStore;
 
 import java.io.UnsupportedEncodingException;
