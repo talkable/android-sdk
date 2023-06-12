@@ -3,6 +3,7 @@
     package="com.talkable.demo">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,8 @@
         android:name=".DemoApp">
         <activity
             android:name="com.talkable.demo.MainActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation">
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,8 +45,9 @@
         <!-- Facebook -->
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider549932915208564"
+        <provider android:authorities="com.facebook.app.FacebookContentProvider784708545842451"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true"/>
 

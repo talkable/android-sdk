@@ -5,14 +5,14 @@ apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.talkable'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 27
-        versionCode 40
-        versionName "0.5.11"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        targetSdkVersion 31
+        versionCode 41
+        versionName "0.5.12"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -49,14 +49,14 @@ dependencies {
         exclude module: 'objenesis'
     }
 
-    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test:rules:1.0.1'
+    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
 
-    implementation 'com.android.support:support-annotations:27.1.1'
+    implementation 'androidx.annotation:annotation:1.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.2.0' // update to a new version when https://github.com/square/okhttp/issues/3928 will be fixed
     implementation 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-android-sdk:14.1.1'
     implementation 'com.google.code.gson:gson:2.8.+'
-    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

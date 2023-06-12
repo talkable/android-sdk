@@ -57,7 +57,9 @@ public class NativeFeatures {
             isMessengerInstalled = MessengerUtils.hasMessengerInstalled(context);
             isWhatsAppAvailable  = isPackageInstalled("com.whatsapp", context);
 
-            Intent sendNativeMailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
+            Intent sendNativeMailIntent = new Intent(Intent.ACTION_SENDTO);
+            sendNativeMailIntent.setData(Uri.parse("mailto:"));
+            sendNativeMailIntent.addCategory(Intent.CATEGORY_DEFAULT);
             List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(sendNativeMailIntent, 0);
             if (!resolveInfos.isEmpty()) {
                 // for some android emulators there is always "com.android.fallback/.Fallback" intent

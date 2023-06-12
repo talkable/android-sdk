@@ -7,9 +7,7 @@ import android.util.Log;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.internal.FacebookDialogBase;
 import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareContent;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.MessageDialog;
 import com.facebook.share.widget.ShareDialog;
@@ -55,7 +53,7 @@ public class FacebookUtils {
         return new ShareLinkContent.Builder().setContentUrl(Uri.parse(url)).build();
     }
 
-    private static void registerCallback(FacebookDialogBase<ShareContent, Sharer.Result> dialog, final TalkableOfferFragment fragment, final String sharingChannel) {
+    private static void registerCallback(ShareDialog dialog, final TalkableOfferFragment fragment, final String sharingChannel) {
         if (callbackManager == null) {
             return;
         }
@@ -77,7 +75,7 @@ public class FacebookUtils {
         });
     }
 
-    private static void showDialog(FacebookDialogBase<ShareContent, Sharer.Result> dialog, String url) {
+    private static void showDialog(ShareDialog dialog, String url) {
         dialog.show(shareContent(url));
     }
 }
