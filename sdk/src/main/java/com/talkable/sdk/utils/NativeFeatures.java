@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.telephony.TelephonyManager;
 
 import com.facebook.FacebookSdk;
+import com.facebook.internal.FacebookSignatureValidator;
 import com.facebook.messenger.MessengerUtils;
 import com.google.gson.JsonObject;
 import com.talkable.sdk.BuildConfig;
@@ -54,7 +55,7 @@ public class NativeFeatures {
                 isSmsAvailable = true;
             }
 
-            isMessengerInstalled = MessengerUtils.hasMessengerInstalled(context);
+            isMessengerInstalled = FacebookSignatureValidator.validateSignature(context, MessengerUtils.PACKAGE_NAME);
             isWhatsAppAvailable  = isPackageInstalled("com.whatsapp", context);
 
             Intent sendNativeMailIntent = new Intent(Intent.ACTION_SENDTO);

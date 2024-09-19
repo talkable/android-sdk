@@ -5,13 +5,13 @@ apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.talkable'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 31
-        versionCode 41
-        versionName "0.5.12"
+        targetSdkVersion 33
+        versionCode 42
+        versionName "0.5.13"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -37,7 +37,7 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 
     testImplementation 'org.mockito:mockito-core:1.10.19'
     testImplementation('org.powermock:powermock-api-mockito:1.6.6') {
@@ -49,14 +49,14 @@ dependencies {
         exclude module: 'objenesis'
     }
 
-    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestImplementation 'androidx.annotation:annotation:1.8.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test:rules:1.6.1'
 
-    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'androidx.annotation:annotation:1.8.2'
     implementation 'com.squareup.okhttp3:okhttp:3.2.0' // update to a new version when https://github.com/square/okhttp/issues/3928 will be fixed
     implementation 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    implementation 'com.facebook.android:facebook-android-sdk:14.1.1'
+    implementation 'com.facebook.android:facebook-android-sdk:15.2.0'
     implementation 'com.google.code.gson:gson:2.8.+'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
