@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'de.mobilej.unmock'
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'
 
 group='com.github.talkable'
 
@@ -10,8 +10,6 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 33
-        versionCode 42
-        versionName "0.5.13"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -24,10 +22,11 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-
-    lintOptions {
+    namespace 'com.talkable.sdk'
+    lint {
         abortOnError false
     }
+
 }
 
 repositories {
