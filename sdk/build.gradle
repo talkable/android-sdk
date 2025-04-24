@@ -5,12 +5,19 @@ apply plugin: 'de.mobilej.unmock'
 group='com.github.talkable'
 
 android {
+    namespace 'com.talkable.sdk'
     compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 33
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+//        versionCode 42
+//        versionName "0.5.13"
+
+        //Required for sdk version retrieval to work as of Android Studio 4.1.0: https://issuetracker.google.com/issues/158695880
+        buildConfigField 'int', 'VERSION_CODE', "${project.sdk_version_code}"
+        buildConfigField 'String', 'VERSION_NAME', "\"${project.sdk_version_name}\""
     }
     buildTypes {
         release {
@@ -22,10 +29,10 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-    namespace 'com.talkable.sdk'
     lint {
         abortOnError false
     }
+    buildToolsVersion '36.0.0'
 
 }
 

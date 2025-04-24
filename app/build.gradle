@@ -5,6 +5,7 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
 
 android {
+    namespace 'com.talkable.demo'
     signingConfigs {
         config {
             keyAlias keystoreProperties['keyAlias']
@@ -32,6 +33,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion '36.0.0'
 }
 
 dependencies {
