@@ -4,7 +4,7 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
 
 android {
-    namespace 'com.talkable.demo'
+    namespace 'com.talkable.appdemo'
     signingConfigs {
         config {
             keyAlias keystoreProperties['keyAlias']

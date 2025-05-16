@@ -1,4 +1,4 @@
-package com.talkable.demo;
+package com.talkable.appdemo;
 
 import android.app.Application;
 
