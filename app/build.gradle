@@ -15,7 +15,7 @@ android {
     }
     compileSdkVersion 34
     defaultConfig {
-        applicationId "com.talkable.demoapp"
+        applicationId "com.talkable.appdemo"
         minSdkVersion 21
         targetSdkVersion 34
         versionCode 35
