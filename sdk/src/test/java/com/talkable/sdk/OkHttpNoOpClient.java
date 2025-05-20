@@ -100,7 +100,7 @@ public class OkHttpNoOpClient extends OkHttpClient {
                 // Visitor endpoint - use the TestHelper.TEST_UUID value
                 responseJson = "{\"ok\":true,\"result\":{\"uuid\":\"" + TestHelper.TEST_UUID + "\"}}";
             } else if (requestUrl.contains("/events")) {
-                // Events endpoint with offer to pass the assertNotEquals checks
+                // Events endpoint with NULL offer as expected by the test
                 responseJson = "{\"ok\":true,\"result\":{"
                     + "\"origin\":{"
                     + "\"id\":123,"
@@ -110,11 +110,7 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     + "\"subtotal\":10.99,"
                     + "\"coupon_code\":\"TESTCOUPON\""
                     + "},"
-                    + "\"offer\":{"
-                    + "\"id\":456,"
-                    + "\"short_url_code\":\"EVENTCODE\","
-                    + "\"email\":\"event@example.com\""
-                    + "}"
+                    + "\"offer\":null"
                     + "}}";
             } else if (requestUrl.contains("/affiliate_members")) {
                 // Affiliate members endpoint with offer
@@ -141,6 +137,30 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     + "\"email\":\"offer@example.com\""
                     + "}"
                     + "}}";
+            } else if (requestUrl.contains("/social_shares")) {
+                // Social shares endpoint response with reward for testWorkflow
+                responseJson = "{\"ok\":true,\"result\":{"
+                    + "\"social_share\":{"
+                    + "\"id\":123,"
+                    + "\"channel\":\"other\""
+                    + "},"
+                    + "\"reward\":{"
+                    + "\"id\":456,"
+                    + "\"amount\":3.0,"
+                    + "\"coupon_code\":\"AD_3_OFF\","
+                    + "\"reason\":\"shared\""
+                    + "}"
+                    + "}}";
+            } else if (requestUrl.contains("/rewards")) {
+                // Rewards endpoint response for testWorkflow
+                responseJson = "{\"ok\":true,\"result\":{"
+                    + "\"rewards\":[{"
+                    + "\"id\":456,"
+                    + "\"amount\":3.0,"
+                    + "\"coupon_code\":\"AD_3_OFF\","
+                    + "\"reason\":\"shared\""
+                    + "}]}"
+                    + "}";
             } else {
                 // Generic response - ensure it has a non-null offer too
                 responseJson = "{\"ok\":true,\"result\":{"
