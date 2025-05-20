@@ -34,9 +34,9 @@ android {
                     '--add-opens=java.base/java.lang=ALL-UNNAMED',
                     '--add-opens=java.base/java.io=ALL-UNNAMED',
                     '--add-opens=java.base/java.util=ALL-UNNAMED',
-                    '--add-opens=java.base/java.util.concurrent=ALL-UNNAMED'
+                    '--add-opens=java.base/java.util.concurrent=ALL-UNNAMED',
+                    '--add-opens=java.base/com.talkable.sdk=ALL-UNNAMED'
                 ]
-                systemProperty 'powermock.ignore-locations', '**/android/**'
                 systemProperty 'javax.net.ssl.trustStore', 'NONE'
             }
         }
