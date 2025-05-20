@@ -326,7 +326,11 @@ public class TalkableApiUnitTest {
 
     @Test
     public void makeRequestWithoutInternet() throws Exception {
-        Mockito.when(Talkable.getServer()).thenReturn("http://localhost:54321");
+        // Save the original server value
+        String originalServer = server;
+
+        // Use the mocked static instance to change the server
+        talkableMock.when(Talkable::getServer).thenReturn("http://localhost:54321");
 
         sync(new ResultCallback() {
             @Override
@@ -336,7 +340,7 @@ public class TalkableApiUnitTest {
                 TalkableApi.createOrigin(affiliateMember, new Callback2<Origin, Offer>() {
                     @Override
                     public void onSuccess(Origin origin, Offer offer) {
-
+                        // This should not be called
                     }
 
                     @Override
@@ -349,7 +353,7 @@ public class TalkableApiUnitTest {
             }
         });
 
-        Mockito.when(Talkable.getServer()).thenReturn(server);
-
+        // Restore the original server value
+        talkableMock.when(Talkable::getServer).thenReturn(originalServer);
     }
 }
