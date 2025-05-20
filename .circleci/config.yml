@@ -27,7 +27,7 @@ jobs:
 
       - run:
           name: Run tests
-          command: ./gradlew :clean :sdk:test --scan
+          command: ./gradlew :clean :sdk:test
 
       - run:
           name: Save test results

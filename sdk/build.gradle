@@ -31,16 +31,19 @@ android {
                 jvmArgs = [
                     '-noverify',
                     '-XX:+IgnoreUnrecognizedVMOptions',
+                    // Open modules needed for reflection used by Mockito
                     '--add-opens=java.base/java.lang=ALL-UNNAMED',
+                    '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
                     '--add-opens=java.base/java.io=ALL-UNNAMED',
                     '--add-opens=java.base/java.util=ALL-UNNAMED',
                     '--add-opens=java.base/java.util.concurrent=ALL-UNNAMED',
-                    '--add-opens=java.desktop/java.awt=ALL-UNNAMED',
-                    '--add-exports=java.base/sun.nio.ch=ALL-UNNAMED',
                     '--add-opens=java.base/java.net=ALL-UNNAMED',
-                    '--add-opens=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED'
+                    // Allow all access as a fallback when specific open directives don't cover all cases
+                    '--illegal-access=permit'
                 ]
                 systemProperty 'javax.net.ssl.trustStore', 'NONE'
+                // Tell Mockito to use the inline mock maker which is needed for static mocking
+                systemProperty 'org.mockito.mockmaker', 'inline'
             }
         }
     }

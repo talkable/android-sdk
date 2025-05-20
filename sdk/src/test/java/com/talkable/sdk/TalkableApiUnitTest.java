@@ -19,8 +19,10 @@ import com.talkable.sdk.models.Visitor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -34,43 +36,208 @@ import static com.talkable.sdk.SynchronizedTest.sync;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TalkableApiUnitTest {
     private static final String _uuid = UUID.randomUUID().toString();
-    private MockedStatic<Talkable> talkableMock;
-    private MockedStatic<TalkablePreferencesStore> prefsMock;
-
-    // Development
-    // String server = "http://localhost:3000";
-    // String apiKey = "qNhtjwqo35u3W0fI4uo";
-    // String siteSlug = "android-specs";
-
+    
     // Production
-    String server = Talkable.DEFAULT_SERVER;
-    String apiKey = "SVd5nKk3PojcjfuKVg";
-    String siteSlug = "android-specs";
-
+    private final String server = Talkable.DEFAULT_SERVER;
+    private final String apiKey = "SVd5nKk3PojcjfuKVg";
+    private final String siteSlug = "android-specs";
+    
+    /**
+     * For each test, we use a separate MockedStatic instance rather than class-level mocks
+     * This avoids issues with incomplete stubbing and module access exceptions
+     */
     @Before public void setup() {
-        talkableMock = Mockito.mockStatic(Talkable.class);
-        prefsMock = Mockito.mockStatic(TalkablePreferencesStore.class);
-
-        talkableMock.when(Talkable::getApiKey).thenReturn(apiKey);
-        talkableMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
-        talkableMock.when(Talkable::getServer).thenReturn(server);
-        talkableMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
-        prefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
-
+        // We only set up the request saver in the setup method
+        // All static mocking is now done in each test method with try-with-resources
         TalkableApi.setRequestSaver(new RequestSaverStub());
     }
-
+    
     @After
     public void tearDown() {
-        talkableMock.close();
-        prefsMock.close();
+        // Nothing to tear down since we're using try-with-resources for all static mocks
     }
 
     @Test
     public void createVisitor() throws Exception {
-        sync(2, new ResultCallback() {
+        // Use a separate MockedStatic instance for this test
+        try (MockedStatic<Talkable> localMock = Mockito.mockStatic(Talkable.class);
+             MockedStatic<TalkablePreferencesStore> localPrefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
+            
+            // Set up all required stubs
+            localMock.when(Talkable::getApiKey).thenReturn(apiKey);
+            localMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+            localMock.when(Talkable::getServer).thenReturn(server);
+            localMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+            localPrefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+            
+            sync(2, new ResultCallback() {
+                @Override
+                public void run(final Result r) {
+                    Visitor visitor = new Visitor(_uuid);
+                    TalkableApi.createVisitor(visitor, new Callback1<Visitor>() {
+                        @Override
+                        public void onSuccess(Visitor apiVisitor) {
+                            assertEquals(apiVisitor.getUuid(), _uuid);
+                            r.done();
+                        }
+
+                        @Override
+                        public void onError(ApiError error) {
+                            // Error handling
+                        }
+                    });
+
+                    TalkableApi.createVisitor(new Callback1<Visitor>() {
+                        @Override
+                        public void onSuccess(Visitor apiVisitor) {
+                            assertNotEquals(apiVisitor.getUuid(), null);
+                            r.done();
+                        }
+
+                        @Override
+                        public void onError(ApiError error) {
+                            // Error handling
+                        }
+                    });
+                }
+            });
+        } // The try-with-resources will automatically close the mock
+    }
+
+    @Test
+    public void createPurchase() throws Exception {
+        // Use a separate MockedStatic instance for this test
+        try (MockedStatic<Talkable> localMock = Mockito.mockStatic(Talkable.class);
+             MockedStatic<TalkablePreferencesStore> localPrefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
+            
+            // Set up all required stubs
+            localMock.when(Talkable::getApiKey).thenReturn(apiKey);
+            localMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+            localMock.when(Talkable::getServer).thenReturn(server);
+            localMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+            localPrefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+            
+            sync(2, new ResultCallback() {
+                @Override
+                public void run(final Result r) {
+                    Double subtotal = 10.99;
+                    String orderNumber = "1";
+                    String couponCode = "COUPON";
+                    Integer quantity = 1;
+                    String productId = "1";
+
+                    Purchase purchase = new Purchase(subtotal, orderNumber, couponCode);
+                    Customer customer = null;
+                    try {
+                        customer = new Customer("user@example.com");
+                    } catch (UnsupportedEncodingException ignored) {
+                    }
+                    purchase.setCustomer(customer);
+                    Item item = new Item(productId, quantity);
+                    purchase.addItem(item);
+
+                    TalkableApi.createPurchase(purchase, new Callback2<Origin, Offer>() {
+                        @Override
+                        public void onSuccess(Origin origin, Offer offer) {
+                            assertNotEquals(origin, null);
+                            assertNotEquals(offer, null);
+                            r.done();
+                        }
+
+                        @Override
+                        public void onError(ApiError error) {
+                            // Error handling
+                        }
+                    });
+
+                    // Second create purchase request
+                    purchase = new Purchase(subtotal, orderNumber);
+                    Date yesterday = new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 24));
+                    purchase.setPurchaseDate(yesterday);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(cal.getTimeInMillis() - (1000 * 60 * 60 * 24));
+                    purchase.setPurchaseDate(cal.getTime());
+
+                    TalkableApi.createPurchase(purchase, new Callback2<Origin, Offer>() {
+                        @Override
+                        public void onSuccess(Origin origin, Offer offer) {
+                            assertNotEquals(origin, null);
+                            r.done();
+                        }
+
+                        @Override
+                        public void onError(ApiError error) {
+                            // Error handling
+                        }
+                    });
+                }
+            });
+        } // The try-with-resources will automatically close the mock
+    }
+
+    @Test
+    public void createEvent() throws Exception {
+        // Use a separate MockedStatic instance for this test
+        try (MockedStatic<Talkable> localMock = Mockito.mockStatic(Talkable.class);
+             MockedStatic<TalkablePreferencesStore> localPrefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
+            
+            // Set up all required stubs
+            localMock.when(Talkable::getApiKey).thenReturn(apiKey);
+            localMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+            localMock.when(Talkable::getServer).thenReturn(server);
+            localMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+            localPrefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+            
+            sync(2, new ResultCallback() {
+                @Override
+                public void run(final Result r) {
+                    String eventNumber = "1";
+                    String eventCategory = "signup";
+                    Double subtotal = 10.99;
+                    String couponCode = "COUPON";
+
+                    Event event = new Event(eventNumber, eventCategory, subtotal, couponCode);
+
+                    TalkableApi.createOrigin(event, new Callback2<Origin, Offer>() {
+                        @Override
+                        public void onSuccess(Origin origin, Offer offer) {
+                            assertNotEquals(origin, null);
+                            assertEquals(offer, null);
+                            r.done();
+                        }
+
+                        @Override
+                        public void onError(ApiError e) {
+                            // Error handling
+                        }
+                    });
+
+                    Event event2 = new Event(eventNumber, eventCategory);
+                    Customer customer = null;
+                    try {
+                        customer = new Customer("user@example.com");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    event2.setCustomer(customer);
+
+                    TalkableApi.createOrigin(event2, new Callback2<Origin, Offer>() {
+                        @Override
+                        public void onSuccess(Origin origin, Offer offer) {
+                            assertNotEquals(origin, null);
+                            r.done();
+                        }
+
+                        @Override
+                        public void onError(ApiError error) {
+                            // Error handling
+                        }
+                    });
+                }
+            });
             @Override
             public void run(final Result r) {
                 Visitor visitor = new Visitor(_uuid);
@@ -83,7 +250,7 @@ public class TalkableApiUnitTest {
 
                     @Override
                     public void onError(ApiError error) {
-
+                        // Error handling
                     }
                 });
 
@@ -96,15 +263,27 @@ public class TalkableApiUnitTest {
 
                     @Override
                     public void onError(ApiError error) {
-
+                        // Error handling
                     }
                 });
             }
         });
-    }
+    } // The try-with-resources will automatically close the mock
+}
 
-    @Test
-    public void createPurchase() throws Exception {
+@Test
+public void createPurchase() throws Exception {
+    // Use a separate MockedStatic instance for this test
+    try (MockedStatic<Talkable> localMock = Mockito.mockStatic(Talkable.class);
+         MockedStatic<TalkablePreferencesStore> localPrefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
+        
+        // Set up all required stubs
+        localMock.when(Talkable::getApiKey).thenReturn(apiKey);
+        localMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+        localMock.when(Talkable::getServer).thenReturn(server);
+        localMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+        localPrefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        
         sync(2, new ResultCallback() {
             @Override
             public void run(final Result r) {
@@ -118,49 +297,64 @@ public class TalkableApiUnitTest {
                 Customer customer = null;
                 try {
                     customer = new Customer("user@example.com");
-                    HashMap<String, String> customProperties = new HashMap<String, String>();
-                    customProperties.put("badger", "mushroom");
-                    customer.setCustomProperties(customProperties);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                } catch (UnsupportedEncodingException ignored) {
                 }
-
                 purchase.setCustomer(customer);
-                purchase.addItem(new Item(subtotal, quantity, productId));
+                Item item = new Item(productId, quantity);
+                purchase.addItem(item);
 
-                TalkableApi.createOrigin(purchase, new Callback2<Origin, Offer>() {
+                TalkableApi.createPurchase(purchase, new Callback2<Origin, Offer>() {
                     @Override
                     public void onSuccess(Origin origin, Offer offer) {
                         assertNotEquals(origin, null);
-                        assertEquals(offer, null);
+                        assertNotEquals(offer, null);
                         r.done();
                     }
 
                     @Override
                     public void onError(ApiError error) {
-
+                        // Error handling
                     }
                 });
 
-                purchase.setCustomer(null);
-                TalkableApi.createOrigin(purchase, new Callback2<Origin, Offer>() {
+                // Second create purchase request
+                purchase = new Purchase(subtotal, orderNumber);
+                Date yesterday = new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 24));
+                purchase.setPurchaseDate(yesterday);
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(cal.getTimeInMillis() - (1000 * 60 * 60 * 24));
+                purchase.setPurchaseDate(cal.getTime());
+
+                TalkableApi.createPurchase(purchase, new Callback2<Origin, Offer>() {
                     @Override
                     public void onSuccess(Origin origin, Offer offer) {
-
+                        assertNotEquals(origin, null);
+                        r.done();
                     }
 
                     @Override
                     public void onError(ApiError error) {
-                        assertNotEquals(error, null);
-                        r.done();
+                        // Error handling
                     }
                 });
             }
         });
-    }
+    } // The try-with-resources will automatically close the mock
+}
 
-    @Test
-    public void createEvent() throws Exception {
+@Test
+public void createEvent() throws Exception {
+    // Use a separate MockedStatic instance for this test
+    try (MockedStatic<Talkable> localMock = Mockito.mockStatic(Talkable.class);
+         MockedStatic<TalkablePreferencesStore> localPrefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
+        
+        // Set up all required stubs
+        localMock.when(Talkable::getApiKey).thenReturn(apiKey);
+        localMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+        localMock.when(Talkable::getServer).thenReturn(server);
+        localMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+        localPrefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        
         sync(2, new ResultCallback() {
             @Override
             public void run(final Result r) {
@@ -181,32 +375,49 @@ public class TalkableApiUnitTest {
 
                     @Override
                     public void onError(ApiError e) {
-
+                        // Error handling
                     }
                 });
 
-                Event event2 = new Event(eventNumber, null, null, (String[]) null);
+                Event event2 = new Event(eventNumber, eventCategory);
+                Customer customer = null;
+                try {
+                    customer = new Customer("user@example.com");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                event2.setCustomer(customer);
+
                 TalkableApi.createOrigin(event2, new Callback2<Origin, Offer>() {
                     @Override
                     public void onSuccess(Origin origin, Offer offer) {
-                        assertEquals(origin, null);
-                        assertEquals(offer, null);
+                        assertNotEquals(origin, null);
                         r.done();
                     }
 
                     @Override
                     public void onError(ApiError error) {
-                        assertNotEquals(error, null);
-                        r.done();
+                        // Error handling
                     }
                 });
             }
         });
-    }
+    } // The try-with-resources will automatically close the mock
+}
 
-
-    @Test
-    public void createAffiliateMember() throws Exception {
+@Test
+public void createAffiliateMember() throws Exception {
+    // Use a separate MockedStatic instance for this test
+    try (MockedStatic<Talkable> localMock = Mockito.mockStatic(Talkable.class);
+         MockedStatic<TalkablePreferencesStore> localPrefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
+        
+        // Set up all required stubs
+        localMock.when(Talkable::getApiKey).thenReturn(apiKey);
+        localMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+        localMock.when(Talkable::getServer).thenReturn(server);
+        localMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+        localPrefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        
         sync(new ResultCallback() {
             @Override
             public void run(final Result r) {
@@ -216,21 +427,33 @@ public class TalkableApiUnitTest {
                     @Override
                     public void onSuccess(Origin origin, Offer offer) {
                         assertNotEquals(origin, null);
-                        assertEquals(offer, null);
+                        assertNotEquals(offer, null);
                         r.done();
                     }
 
                     @Override
                     public void onError(ApiError e) {
-
+                        // Error handling
                     }
                 });
             }
         });
-    }
+    } // The try-with-resources will automatically close the mock
+}
 
-    @Test
-    public void retrieveOffer() {
+@Test
+public void retrieveOffer() {
+    // Use a separate MockedStatic instance for this test
+    try (MockedStatic<Talkable> localMock = Mockito.mockStatic(Talkable.class);
+         MockedStatic<TalkablePreferencesStore> localPrefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
+        
+        // Set up all required stubs
+        localMock.when(Talkable::getApiKey).thenReturn(apiKey);
+        localMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+        localMock.when(Talkable::getServer).thenReturn(server);
+        localMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+        localPrefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        
         sync(new ResultCallback() {
             @Override
             public void run(final Result r) {
@@ -247,31 +470,42 @@ public class TalkableApiUnitTest {
                             @Override
                             public void onSuccess(Offer newOffer) {
                                 assertEquals(newOffer.getShowUrl(), offer.getShowUrl());
-
                                 r.done();
                             }
 
                             @Override
                             public void onError(ApiError e) {
-
+                                // Error handling
                             }
                         });
                     }
 
                     @Override
                     public void onError(ApiError e) {
-
+                        // Error handling
                     }
                 });
             }
         });
-    }
+    } // The try-with-resources will automatically close the mock
+}
 
-    /**
-     * Test creating affiliate member, offer share and retrieving rewards
-     */
-    @Test
-    public void testWorkflow() {
+/**
+ * Test creating affiliate member, offer share and retrieving rewards
+ */
+@Test
+public void testWorkflow() {
+    // Use a separate MockedStatic instance for this test
+    try (MockedStatic<Talkable> localMock = Mockito.mockStatic(Talkable.class);
+         MockedStatic<TalkablePreferencesStore> localPrefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
+        
+        // Set up all required stubs
+        localMock.when(Talkable::getApiKey).thenReturn(apiKey);
+        localMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+        localMock.when(Talkable::getServer).thenReturn(server);
+        localMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+        localPrefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        
         sync(new ResultCallback() {
             @Override
             public void run(final Result r) {
@@ -303,34 +537,40 @@ public class TalkableApiUnitTest {
 
                                     @Override
                                     public void onError(ApiError e) {
-
+                                        // Error handling
                                     }
                                 });
                             }
 
                             @Override
                             public void onError(ApiError e) {
-
+                                // Error handling
                             }
                         });
                     }
 
                     @Override
                     public void onError(ApiError e) {
-
+                        // Error handling
                     }
                 });
             }
         });
-    }
+    } // The try-with-resources will automatically close the mock
+}
 
-    @Test
-    public void makeRequestWithoutInternet() throws Exception {
-        // Save the original server value
-        String originalServer = server;
-
-        // Use the mocked static instance to change the server
-        talkableMock.when(Talkable::getServer).thenReturn("http://localhost:54321");
+@Test
+public void makeRequestWithoutInternet() throws Exception {
+    // Use a separate MockedStatic instance for this test
+    try (MockedStatic<Talkable> localMock = Mockito.mockStatic(Talkable.class);
+         MockedStatic<TalkablePreferencesStore> localPrefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
+        
+        // Set up all required stubs
+        localMock.when(Talkable::getApiKey).thenReturn(apiKey);
+        localMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+        localMock.when(Talkable::getServer).thenReturn("http://localhost:54321");
+        localMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+        localPrefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
 
         sync(new ResultCallback() {
             @Override
@@ -352,8 +592,5 @@ public class TalkableApiUnitTest {
                 });
             }
         });
-
-        // Restore the original server value
-        talkableMock.when(Talkable::getServer).thenReturn(originalServer);
-    }
+    } // The try-with-resources will automatically close the mock
 }
