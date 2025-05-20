@@ -16,13 +16,11 @@ import com.talkable.sdk.models.SharingChannel;
 import com.talkable.sdk.models.SocialOfferShare;
 import com.talkable.sdk.models.Visitor;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -36,29 +34,10 @@ import static com.talkable.sdk.SynchronizedTest.sync;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Talkable.class, TalkablePreferencesStore.class})
-@PowerMockIgnore({
-    "javax.crypto.*",
-    "javax.security.*",
-    "javax.net.ssl.*",
-    "javax.net.*",
-    "javax.management.*",
-    "javax.script.*",
-    "javax.xml.*",
-    "org.w3c.dom.*",
-    "org.xml.sax.*",
-    "org.apache.log4j.*",
-    "android.*",
-    "org.mockito.*",
-    "org.robolectric.*",
-    "sun.security.*",
-    "javax.tools.*",
-    "com.sun.*",
-    "org.objenesis.*"
-})
 public class TalkableApiUnitTest {
     private static final String _uuid = UUID.randomUUID().toString();
+    private MockedStatic<Talkable> talkableMock;
+    private MockedStatic<TalkablePreferencesStore> prefsMock;
 
     // Development
     // String server = "http://localhost:3000";
@@ -71,16 +50,22 @@ public class TalkableApiUnitTest {
     String siteSlug = "android-specs";
 
     @Before public void setup() {
-        PowerMockito.mockStatic(Talkable.class);
-        PowerMockito.mockStatic(TalkablePreferencesStore.class);
+        talkableMock = Mockito.mockStatic(Talkable.class);
+        prefsMock = Mockito.mockStatic(TalkablePreferencesStore.class);
 
-        PowerMockito.when(Talkable.getApiKey()).thenReturn(apiKey);
-        PowerMockito.when(Talkable.getSiteSlug()).thenReturn(siteSlug);
-        PowerMockito.when(Talkable.getServer()).thenReturn(server);
-        PowerMockito.when(Talkable.getHttpClient()).thenReturn(new OkHttpClient());
-        PowerMockito.when(TalkablePreferencesStore.getMainUUID()).thenReturn(_uuid);
+        talkableMock.when(Talkable::getApiKey).thenReturn(apiKey);
+        talkableMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
+        talkableMock.when(Talkable::getServer).thenReturn(server);
+        talkableMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
+        prefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
 
         TalkableApi.setRequestSaver(new RequestSaverStub());
+    }
+
+    @After
+    public void tearDown() {
+        talkableMock.close();
+        prefsMock.close();
     }
 
     @Test
@@ -341,7 +326,7 @@ public class TalkableApiUnitTest {
 
     @Test
     public void makeRequestWithoutInternet() throws Exception {
-        PowerMockito.when(Talkable.getServer()).thenReturn("http://localhost:54321");
+        Mockito.when(Talkable.getServer()).thenReturn("http://localhost:54321");
 
         sync(new ResultCallback() {
             @Override
@@ -364,7 +349,7 @@ public class TalkableApiUnitTest {
             }
         });
 
-        PowerMockito.when(Talkable.getServer()).thenReturn(server);
+        Mockito.when(Talkable.getServer()).thenReturn(server);
 
     }
 }
