@@ -57,18 +57,36 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     public void run() {
                         if (!canceled) {
                             executed = true;
-                            callback.onResponse(NoOpCall.this, createMockResponse());
+                            try {
+                                callback.onResponse(NoOpCall.this, createMockResponse());
+                            } catch (IOException e) {
+                                // This should not happen with our mock response, but handle it anyway
+                                callback.onFailure(NoOpCall.this, e);
+                            }
                         }
                     }
                 }).start();
             }
         }
 
-        private Response createMockResponse() {
-            // Create a minimal valid response so callbacks can be properly executed
+        private Response createMockResponse() throws IOException {
+            // Create a realistic mock response for TalkableApi to parse
+            String requestUrl = request.url().toString();
+            String responseJson;
+
+            // Different responses based on endpoint being called
+            if (requestUrl.contains("/origins")) {
+                responseJson = "{\"ok\":true,\"result\":{\"origin\":{\"id\":123,\"type\":\"Purchase\"},\"offer\":null}}";
+            } else if (requestUrl.contains("/visitors")) {
+                responseJson = "{\"ok\":true,\"result\":{\"uuid\":\"test-uuid\"}}";
+            } else {
+                // Generic response for other endpoints
+                responseJson = "{\"ok\":true,\"result\":{}}";
+            }
+
             ResponseBody body = ResponseBody.create(
                     MediaType.parse("application/json"),
-                    "{\"result\":{},\"ok\":true}");
+                    responseJson);
 
             return new Response.Builder()
                     .code(200)
