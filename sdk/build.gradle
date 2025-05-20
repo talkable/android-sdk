@@ -4,6 +4,11 @@ apply plugin: 'maven-publish'
 
 group='com.github.talkable'
 
+// Configure JUnit 5 for Android projects
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
+
 android {
     namespace 'com.talkable.sdk'
     compileSdkVersion 33
@@ -45,7 +50,7 @@ android {
                     // Needed specifically for ByteBuddy which Mockito uses for mocking
                     '--add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED',
                     '--add-opens=java.desktop/java.awt.font=ALL-UNNAMED',
-                    
+
                     // Needed for OkHttp SSL handling
                     '--add-opens=java.base/sun.security.ssl=ALL-UNNAMED',
                     '--add-opens=java.base/javax.net.ssl=ALL-UNNAMED',
@@ -72,10 +77,14 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    testImplementation 'junit:junit:4.13.2'
+    // JUnit 5 (Jupiter) dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
 
     testImplementation 'org.mockito:mockito-core:4.11.0'
     testImplementation 'org.mockito:mockito-inline:4.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.11.0'
 
     androidTestImplementation 'androidx.annotation:annotation:1.8.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

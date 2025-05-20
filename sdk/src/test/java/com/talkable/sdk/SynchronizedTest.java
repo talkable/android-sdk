@@ -3,7 +3,7 @@ package com.talkable.sdk;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SynchronizedTest {
 
@@ -17,7 +17,7 @@ public class SynchronizedTest {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-        assertEquals("See previous errors. Something happened in other threads", 0, signal.getCount());
+        assertEquals(0, signal.getCount(), "See previous errors. Something happened in other threads");
     }
 
     public static void sync(ResultCallback event) {

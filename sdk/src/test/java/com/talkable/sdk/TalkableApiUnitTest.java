@@ -16,12 +16,12 @@ import com.talkable.sdk.models.SharingChannel;
 import com.talkable.sdk.models.SocialOfferShare;
 import com.talkable.sdk.models.Visitor;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -32,10 +32,10 @@ import java.util.UUID;
 import okhttp3.OkHttpClient;
 
 import static com.talkable.sdk.SynchronizedTest.sync;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class TalkableApiUnitTest {
     private static final String _uuid = TestHelper.TEST_UUID;
 
@@ -46,14 +46,14 @@ public class TalkableApiUnitTest {
 
     // All static mocks and HTTP client will be managed by TestHelper
 
-    @Before
+    @BeforeEach
     public void setup() {
         // We only set up the request saver in the setup method
         TalkableApi.setRequestSaver(new RequestSaverStub());
     }
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    public void teardown() {
         // Nothing to tear down since we're using try-with-resources for all static mocks
     }
 
