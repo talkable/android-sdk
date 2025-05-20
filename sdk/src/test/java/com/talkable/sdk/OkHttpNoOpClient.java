@@ -142,18 +142,23 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     + "}"
                     + "}}";
             } else if (requestUrl.contains("/social_shares")) {
-                // Social shares endpoint response with reward for testWorkflow
-                // CRITICAL: TalkableApi expects 'share' and 'reward' fields INSIDE the result object
+                // Special handling for social shares - ensuring non-null reward
+                // TalkableApi.createSocialShare expects these fields directly in the result object
+                // which is extracted by lowLevelCall
                 responseJson = "{\"ok\":true,\"result\":{"
                     + "\"share\":{"
                     + "\"id\":123,"
-                    + "\"channel\":\"other\""
+                    + "\"channel\":\"other\","
+                    + "\"short_url_code\":\"SHARINGCODE\""
                     + "},"
                     + "\"reward\":{"
                     + "\"id\":456,"
                     + "\"amount\":3.0,"
                     + "\"coupon_code\":\"AD_3_OFF\","
-                    + "\"reason\":\"shared\""
+                    + "\"reason\":\"shared\","
+                    + "\"incentive_type\":\"discount\","
+                    + "\"incentive_description\":\"$3.00 off\","
+                    + "\"status\":\"Paid\""
                     + "}"
                     + "}}";
             } else if (requestUrl.contains("/rewards")) {
@@ -164,7 +169,10 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     + "\"id\":456,"
                     + "\"amount\":3.0,"
                     + "\"coupon_code\":\"AD_3_OFF\","
-                    + "\"reason\":\"shared\""
+                    + "\"reason\":\"shared\","
+                    + "\"incentive_type\":\"discount\","
+                    + "\"incentive_description\":\"$3.00 off\","
+                    + "\"status\":\"Paid\""
                     + "}]"
                     + "}}";
             } else {
