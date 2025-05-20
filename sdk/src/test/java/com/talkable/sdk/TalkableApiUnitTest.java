@@ -21,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.UnsupportedEncodingException;
@@ -44,6 +43,8 @@ public class TalkableApiUnitTest {
     private final String server = Talkable.DEFAULT_SERVER;
     private final String apiKey = "SVd5nKk3PojcjfuKVg";
     private final String siteSlug = "android-specs";
+    
+    // All static mocks and HTTP client will be managed by TestHelper
 
     @Before
     public void setup() {
@@ -58,15 +59,8 @@ public class TalkableApiUnitTest {
 
     @Test
     public void createVisitor() throws Exception {
-        try (MockedStatic<Talkable> talkableMock = Mockito.mockStatic(Talkable.class);
-             MockedStatic<TalkablePreferencesStore> prefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
-
-            // Setup all required mocks
-            talkableMock.when(Talkable::getApiKey).thenReturn(apiKey);
-            talkableMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
-            talkableMock.when(Talkable::getServer).thenReturn(server);
-            talkableMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
-            prefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        // Use TestHelper to manage static mocks
+        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
 
             sync(2, new ResultCallback() {
                 @Override
@@ -104,15 +98,8 @@ public class TalkableApiUnitTest {
 
     @Test
     public void createPurchase() throws Exception {
-        try (MockedStatic<Talkable> talkableMock = Mockito.mockStatic(Talkable.class);
-             MockedStatic<TalkablePreferencesStore> prefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
-
-            // Setup all required mocks
-            talkableMock.when(Talkable::getApiKey).thenReturn(apiKey);
-            talkableMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
-            talkableMock.when(Talkable::getServer).thenReturn(server);
-            talkableMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
-            prefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        // Use TestHelper to manage static mocks
+        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
 
             sync(2, new ResultCallback() {
                 @Override
@@ -172,15 +159,8 @@ public class TalkableApiUnitTest {
 
     @Test
     public void createEvent() throws Exception {
-        try (MockedStatic<Talkable> talkableMock = Mockito.mockStatic(Talkable.class);
-             MockedStatic<TalkablePreferencesStore> prefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
-
-            // Setup all required mocks
-            talkableMock.when(Talkable::getApiKey).thenReturn(apiKey);
-            talkableMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
-            talkableMock.when(Talkable::getServer).thenReturn(server);
-            talkableMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
-            prefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        // Use TestHelper to manage static mocks
+        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
 
             sync(2, new ResultCallback() {
                 @Override
@@ -234,15 +214,8 @@ public class TalkableApiUnitTest {
 
     @Test
     public void createAffiliateMember() throws Exception {
-        try (MockedStatic<Talkable> talkableMock = Mockito.mockStatic(Talkable.class);
-             MockedStatic<TalkablePreferencesStore> prefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
-
-            // Setup all required mocks
-            talkableMock.when(Talkable::getApiKey).thenReturn(apiKey);
-            talkableMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
-            talkableMock.when(Talkable::getServer).thenReturn(server);
-            talkableMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
-            prefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        // Use TestHelper to manage static mocks
+        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
 
             sync(new ResultCallback() {
                 @Override
@@ -269,15 +242,8 @@ public class TalkableApiUnitTest {
 
     @Test
     public void retrieveOffer() {
-        try (MockedStatic<Talkable> talkableMock = Mockito.mockStatic(Talkable.class);
-             MockedStatic<TalkablePreferencesStore> prefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
-
-            // Setup all required mocks
-            talkableMock.when(Talkable::getApiKey).thenReturn(apiKey);
-            talkableMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
-            talkableMock.when(Talkable::getServer).thenReturn(server);
-            talkableMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
-            prefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        // Use TestHelper to manage static mocks
+        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
 
             sync(new ResultCallback() {
                 @Override
@@ -320,15 +286,8 @@ public class TalkableApiUnitTest {
      */
     @Test
     public void testWorkflow() {
-        try (MockedStatic<Talkable> talkableMock = Mockito.mockStatic(Talkable.class);
-             MockedStatic<TalkablePreferencesStore> prefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
-
-            // Setup all required mocks
-            talkableMock.when(Talkable::getApiKey).thenReturn(apiKey);
-            talkableMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
-            talkableMock.when(Talkable::getServer).thenReturn(server);
-            talkableMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
-            prefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        // Use TestHelper to manage static mocks
+        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
 
             sync(new ResultCallback() {
                 @Override
@@ -385,15 +344,10 @@ public class TalkableApiUnitTest {
 
     @Test
     public void makeRequestWithoutInternet() throws Exception {
-        try (MockedStatic<Talkable> talkableMock = Mockito.mockStatic(Talkable.class);
-             MockedStatic<TalkablePreferencesStore> prefsMock = Mockito.mockStatic(TalkablePreferencesStore.class)) {
-
-            // Setup all required mocks
-            talkableMock.when(Talkable::getApiKey).thenReturn(apiKey);
-            talkableMock.when(Talkable::getSiteSlug).thenReturn(siteSlug);
-            talkableMock.when(Talkable::getServer).thenReturn("http://localhost:54321"); // Intentionally invalid server
-            talkableMock.when(Talkable::getHttpClient).thenReturn(new OkHttpClient());
-            prefsMock.when(TalkablePreferencesStore::getMainUUID).thenReturn(_uuid);
+        // Use TestHelper to manage static mocks and override server to invalid one
+        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
+            // Override the server to an invalid one
+            ((MockedStatic<Talkable>)mocks[0]).when(Talkable::getServer).thenReturn("http://localhost:54321");
 
             sync(new ResultCallback() {
                 @Override

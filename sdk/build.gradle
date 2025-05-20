@@ -44,7 +44,12 @@ android {
                     '--add-opens=java.base/sun.nio.ch=ALL-UNNAMED',
                     // Needed specifically for ByteBuddy which Mockito uses for mocking
                     '--add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED',
-                    '--add-opens=java.desktop/java.awt.font=ALL-UNNAMED'
+                    '--add-opens=java.desktop/java.awt.font=ALL-UNNAMED',
+                    
+                    // Needed for OkHttp SSL handling
+                    '--add-opens=java.base/sun.security.ssl=ALL-UNNAMED',
+                    '--add-opens=java.base/javax.net.ssl=ALL-UNNAMED',
+                    '--add-opens=java.base/javax.crypto=ALL-UNNAMED'
                 ]
                 systemProperty 'javax.net.ssl.trustStore', 'NONE'
                 // Critical for static mocking in Mockito
