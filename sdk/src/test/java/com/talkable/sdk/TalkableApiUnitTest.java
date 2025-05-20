@@ -179,7 +179,7 @@ public class TalkableApiUnitTest {
                         @Override
                         public void onSuccess(Origin origin, Offer offer) {
                             assertNotEquals(origin, null);
-                            assertEquals(offer, null);
+                            assertNotEquals(offer, null);
                             r.done();
                         }
 

@@ -100,7 +100,7 @@ public class OkHttpNoOpClient extends OkHttpClient {
                 // Visitor endpoint - use the TestHelper.TEST_UUID value
                 responseJson = "{\"ok\":true,\"result\":{\"uuid\":\"" + TestHelper.TEST_UUID + "\"}}";
             } else if (requestUrl.contains("/events")) {
-                // Events endpoint with NULL offer - test expects assertEquals(offer, null)
+                // Events endpoint with non-null offer - test expects assertNotEquals(offer, null)
                 responseJson = "{\"ok\":true,\"result\":{"
                     + "\"origin\":{"
                     + "\"id\":123,"
@@ -110,7 +110,11 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     + "\"subtotal\":10.99,"
                     + "\"coupon_code\":\"TESTCOUPON\""
                     + "},"
-                    + "\"offer\":null"
+                    + "\"offer\":{"
+                    + "\"id\":456,"
+                    + "\"short_url_code\":\"EVENTCODE\","
+                    + "\"email\":\"event@example.com\""
+                    + "}"
                     + "}}";
             } else if (requestUrl.contains("/affiliate_members")) {
                 // Affiliate members endpoint with offer
@@ -139,8 +143,8 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     + "}}";
             } else if (requestUrl.contains("/social_shares")) {
                 // Social shares endpoint response with reward for testWorkflow
-                // NOTE: TalkableApi expects 'share' and 'reward' fields directly in the response, not under "result"
-                responseJson = "{\"ok\":true,"
+                // CRITICAL: TalkableApi expects 'share' and 'reward' fields INSIDE the result object
+                responseJson = "{\"ok\":true,\"result\":{"
                     + "\"share\":{"
                     + "\"id\":123,"
                     + "\"channel\":\"other\""
@@ -151,7 +155,7 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     + "\"coupon_code\":\"AD_3_OFF\","
                     + "\"reason\":\"shared\""
                     + "}"
-                    + "}";
+                    + "}}";
             } else if (requestUrl.contains("/rewards")) {
                 // Rewards endpoint response for testWorkflow
                 // Fixed structure to match exactly what the test expects
