@@ -43,7 +43,7 @@ public class TalkableApiUnitTest {
     private final String server = Talkable.DEFAULT_SERVER;
     private final String apiKey = "SVd5nKk3PojcjfuKVg";
     private final String siteSlug = "android-specs";
-    
+
     // All static mocks and HTTP client will be managed by TestHelper
 
     @Before
