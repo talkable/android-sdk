@@ -28,22 +28,28 @@ android {
         unitTests {
             returnDefaultValues = true
             all {
-                jvmArgs = [
+                jvmArgs += [
                     '-noverify',
-                    '-XX:+IgnoreUnrecognizedVMOptions',
-                    // Open modules needed for reflection used by Mockito
+                    // Open ALL critical modules for Mockito static mocking
                     '--add-opens=java.base/java.lang=ALL-UNNAMED',
-                    '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
-                    '--add-opens=java.base/java.io=ALL-UNNAMED',
                     '--add-opens=java.base/java.util=ALL-UNNAMED',
                     '--add-opens=java.base/java.util.concurrent=ALL-UNNAMED',
+                    '--add-opens=java.base/java.io=ALL-UNNAMED',
                     '--add-opens=java.base/java.net=ALL-UNNAMED',
-                    // Allow all access as a fallback when specific open directives don't cover all cases
-                    '--illegal-access=permit'
+                    '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED',
+                    '--add-opens=java.base/java.text=ALL-UNNAMED',
+                    '--add-opens=java.base/java.time=ALL-UNNAMED',
+                    '--add-opens=java.base/java.nio=ALL-UNNAMED',
+                    '--add-opens=java.base/java.math=ALL-UNNAMED',
+                    '--add-opens=java.base/sun.nio.ch=ALL-UNNAMED',
+                    // Needed specifically for ByteBuddy which Mockito uses for mocking
+                    '--add-opens=java.base/jdk.internal.reflect=ALL-UNNAMED',
+                    '--add-opens=java.desktop/java.awt.font=ALL-UNNAMED'
                 ]
                 systemProperty 'javax.net.ssl.trustStore', 'NONE'
-                // Tell Mockito to use the inline mock maker which is needed for static mocking
+                // Critical for static mocking in Mockito
                 systemProperty 'org.mockito.mockmaker', 'inline'
+                systemProperty 'mockito.inline.extended', 'true'
             }
         }
     }
