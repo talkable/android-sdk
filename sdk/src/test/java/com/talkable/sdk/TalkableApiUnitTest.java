@@ -43,7 +43,14 @@ import static org.junit.Assert.assertNotEquals;
     "android.*",
     "org.objenesis.*",
     "sun.misc.Unsafe",
-    "javax.crypto.*"
+    "javax.crypto.*",
+    "javax.management.*",
+    "javax.script.*",
+    "javax.xml.*",
+    "org.w3c.*",
+    "com.sun.*",
+    "jdk.*",
+    "org.xml.*"
 })
 public class TalkableApiUnitTest {
     private static final String _uuid = UUID.randomUUID().toString();

@@ -25,7 +25,15 @@ android {
     }
 
     testOptions {
-        unitTests.returnDefaultValues = true
+        unitTests {
+            returnDefaultValues = true
+            all {
+                jvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED',
+                          '--add-opens=java.base/java.io=ALL-UNNAMED',
+                          '--add-opens=java.base/java.util=ALL-UNNAMED',
+                          '--add-opens=java.base/java.util.concurrent=ALL-UNNAMED']
+            }
+        }
     }
     lint {
         abortOnError false
