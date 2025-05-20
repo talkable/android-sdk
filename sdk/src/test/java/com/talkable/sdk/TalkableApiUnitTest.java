@@ -59,8 +59,9 @@ public class TalkableApiUnitTest {
 
     @Test
     public void createVisitor() throws Exception {
-        // Use TestHelper to manage static mocks
-        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
+        // Use TestHelper to manage static mocks properly
+        try (MockedStatic<Talkable> talkableMock = TestHelper.createTalkableMock(_uuid);
+             MockedStatic<TalkablePreferencesStore> prefsMock = TestHelper.createPreferencesMock(_uuid)) {
 
             sync(2, new ResultCallback() {
                 @Override
@@ -98,8 +99,9 @@ public class TalkableApiUnitTest {
 
     @Test
     public void createPurchase() throws Exception {
-        // Use TestHelper to manage static mocks
-        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
+        // Use TestHelper to manage static mocks properly
+        try (MockedStatic<Talkable> talkableMock = TestHelper.createTalkableMock(_uuid);
+             MockedStatic<TalkablePreferencesStore> prefsMock = TestHelper.createPreferencesMock(_uuid)) {
 
             sync(2, new ResultCallback() {
                 @Override
@@ -159,8 +161,9 @@ public class TalkableApiUnitTest {
 
     @Test
     public void createEvent() throws Exception {
-        // Use TestHelper to manage static mocks
-        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
+        // Use TestHelper to manage static mocks properly
+        try (MockedStatic<Talkable> talkableMock = TestHelper.createTalkableMock(_uuid);
+             MockedStatic<TalkablePreferencesStore> prefsMock = TestHelper.createPreferencesMock(_uuid)) {
 
             sync(2, new ResultCallback() {
                 @Override
@@ -214,8 +217,9 @@ public class TalkableApiUnitTest {
 
     @Test
     public void createAffiliateMember() throws Exception {
-        // Use TestHelper to manage static mocks
-        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
+        // Use TestHelper to manage static mocks properly
+        try (MockedStatic<Talkable> talkableMock = TestHelper.createTalkableMock(_uuid);
+             MockedStatic<TalkablePreferencesStore> prefsMock = TestHelper.createPreferencesMock(_uuid)) {
 
             sync(new ResultCallback() {
                 @Override
@@ -242,8 +246,9 @@ public class TalkableApiUnitTest {
 
     @Test
     public void retrieveOffer() {
-        // Use TestHelper to manage static mocks
-        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
+        // Use TestHelper to manage static mocks properly
+        try (MockedStatic<Talkable> talkableMock = TestHelper.createTalkableMock(_uuid);
+             MockedStatic<TalkablePreferencesStore> prefsMock = TestHelper.createPreferencesMock(_uuid)) {
 
             sync(new ResultCallback() {
                 @Override
@@ -286,8 +291,9 @@ public class TalkableApiUnitTest {
      */
     @Test
     public void testWorkflow() {
-        // Use TestHelper to manage static mocks
-        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
+        // Use TestHelper to manage static mocks properly
+        try (MockedStatic<Talkable> talkableMock = TestHelper.createTalkableMock(_uuid);
+             MockedStatic<TalkablePreferencesStore> prefsMock = TestHelper.createPreferencesMock(_uuid)) {
 
             sync(new ResultCallback() {
                 @Override
@@ -344,10 +350,11 @@ public class TalkableApiUnitTest {
 
     @Test
     public void makeRequestWithoutInternet() throws Exception {
-        // Use TestHelper to manage static mocks and override server to invalid one
-        try (MockedStatic<?>[] mocks = TestHelper.createMockedStatics(_uuid)) {
+        // Use TestHelper to manage static mocks properly with an invalid server
+        try (MockedStatic<Talkable> talkableMock = TestHelper.createTalkableMock(_uuid);
+             MockedStatic<TalkablePreferencesStore> prefsMock = TestHelper.createPreferencesMock(_uuid)) {
             // Override the server to an invalid one
-            ((MockedStatic<Talkable>)mocks[0]).when(Talkable::getServer).thenReturn("http://localhost:54321");
+            talkableMock.when(Talkable::getServer).thenReturn("http://localhost:54321");
 
             sync(new ResultCallback() {
                 @Override
