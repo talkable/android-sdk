@@ -9,17 +9,17 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * A minimal no-op OkHttpClient to use in tests without making actual network calls
- * or performing SSL reflection that causes InaccessibleObjectException in newer JVMs.
+ * A minimal OkHttpClient that doesn't use reflection on SSL 
+ * classes during construction, which would cause InaccessibleObjectException 
+ * in newer JVMs.
  */
 public class OkHttpNoOpClient extends OkHttpClient {
-    
     @Override
     public Call newCall(Request request) {
         return new NoOpCall(request);
     }
     
-    private static class NoOpCall implements Call {
+    private class NoOpCall implements Call {
         private final Request request;
         
         NoOpCall(Request request) {
@@ -45,6 +45,7 @@ public class OkHttpNoOpClient extends OkHttpClient {
         
         @Override
         public void cancel() {
+            // No-op
         }
         
         @Override
@@ -60,13 +61,6 @@ public class OkHttpNoOpClient extends OkHttpClient {
         @Override
         public Call clone() {
             return new NoOpCall(request);
-        }
-        
-        // In newer versions of OkHttp, this method is required
-        // Since we're mocking, we can just return null
-        @Override
-        public okio.Timeout timeout() {
-            return null;
         }
     }
 }
