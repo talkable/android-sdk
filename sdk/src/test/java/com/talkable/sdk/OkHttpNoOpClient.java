@@ -10,6 +10,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.Timeout;
 
 /**
  * A minimal OkHttpClient for testing that returns controlled responses
@@ -229,6 +230,11 @@ public class OkHttpNoOpClient extends OkHttpClient {
         @Override
         public Call clone() {
             return new NoOpCall(request);
+        }
+        
+        @Override
+        public Timeout timeout() {
+            return Timeout.NONE;
         }
     }
 }
