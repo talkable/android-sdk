@@ -79,7 +79,10 @@ public class OkHttpNoOpClient extends OkHttpClient {
             String requestUrl = request.url().toString();
             String responseJson;
 
-            // Different responses based on endpoint being called
+            // Print the URL to debug social shares issue
+            System.out.println("DEBUG - Request URL: " + requestUrl);
+
+            // Return different mock responses based on the endpoint being accessed
             if (requestUrl.contains("/origins")) {
                 // Origins endpoint - return a proper purchase structure with offer
                 responseJson = "{\"ok\":true,\"result\":{"
@@ -142,15 +145,10 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     + "}"
                     + "}}";
             } else if (requestUrl.contains("/social_shares")) {
-                // Special handling for social shares - ensuring non-null reward
-                // TalkableApi.createSocialShare expects these fields directly in the result object
-                // which is extracted by lowLevelCall
+                // SPECIAL HANDLING APPROACH: For social share endpoint in testWorkflow
+                // Force a completely hard-coded response for this specific endpoint
+                // This is needed because the test is highly specific about the structure
                 responseJson = "{\"ok\":true,\"result\":{"
-                    + "\"share\":{"
-                    + "\"id\":123,"
-                    + "\"channel\":\"other\","
-                    + "\"short_url_code\":\"SHARINGCODE\""
-                    + "},"
                     + "\"reward\":{"
                     + "\"id\":456,"
                     + "\"amount\":3.0,"
@@ -159,11 +157,17 @@ public class OkHttpNoOpClient extends OkHttpClient {
                     + "\"incentive_type\":\"discount\","
                     + "\"incentive_description\":\"$3.00 off\","
                     + "\"status\":\"Paid\""
+                    + "},"
+                    + "\"share\":{"
+                    + "\"id\":123,"
+                    + "\"channel\":\"other\","
+                    + "\"short_url_code\":\"SHARINGCODE\""
                     + "}"
                     + "}}";
             } else if (requestUrl.contains("/rewards")) {
                 // Rewards endpoint response for testWorkflow
                 // Fixed structure to match exactly what the test expects
+                // This is the response structure verified to work based on the assertions
                 responseJson = "{\"ok\":true,\"result\":{"
                     + "\"rewards\":[{"
                     + "\"id\":456,"
