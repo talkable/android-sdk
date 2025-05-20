@@ -37,7 +37,7 @@ import static org.junit.Assert.assertNotEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TalkableApiUnitTest {
-    private static final String _uuid = UUID.randomUUID().toString();
+    private static final String _uuid = TestHelper.TEST_UUID;
 
     // Production
     private final String server = Talkable.DEFAULT_SERVER;

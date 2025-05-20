@@ -13,6 +13,9 @@ public class TestHelper {
     private static final String DEFAULT_SITE_SLUG = "android-specs";
     private static final String DEFAULT_SERVER = Talkable.DEFAULT_SERVER;
 
+    // Use this UUID across all tests to ensure consistent test results
+    public static final String TEST_UUID = "test-uuid";
+
     /**
      * Creates a configured static mock for Talkable.
      * This avoids issues with unfinished stubbing by setting up all the required mocks.
