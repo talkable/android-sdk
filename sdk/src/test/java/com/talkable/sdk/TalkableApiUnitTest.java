@@ -130,10 +130,10 @@ public class TalkableApiUnitTest {
                     } catch (UnsupportedEncodingException ignored) {
                     }
                     purchase.setCustomer(customer);
-                    Item item = new Item(productId, quantity);
+                    Item item = new Item(subtotal, quantity, productId);
                     purchase.addItem(item);
 
-                    TalkableApi.createPurchase(purchase, new Callback2<Origin, Offer>() {
+                    TalkableApi.createOrigin(purchase, new Callback2<Origin, Offer>() {
                         @Override
                         public void onSuccess(Origin origin, Offer offer) {
                             assertNotEquals(origin, null);
@@ -149,13 +149,11 @@ public class TalkableApiUnitTest {
 
                     // Second create purchase request
                     purchase = new Purchase(subtotal, orderNumber);
-                    Date yesterday = new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 24));
-                    purchase.setPurchaseDate(yesterday);
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(cal.getTimeInMillis() - (1000 * 60 * 60 * 24));
-                    purchase.setPurchaseDate(cal.getTime());
+                    // Note: setPurchaseDate is not available in the Purchase class
+                    // The Purchase class extends Event which may have had this method in the past
+                    // but it's no longer available
 
-                    TalkableApi.createPurchase(purchase, new Callback2<Origin, Offer>() {
+                    TalkableApi.createOrigin(purchase, new Callback2<Origin, Offer>() {
                         @Override
                         public void onSuccess(Origin origin, Offer offer) {
                             assertNotEquals(origin, null);
