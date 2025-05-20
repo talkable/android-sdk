@@ -39,18 +39,23 @@ import static org.junit.Assert.assertNotEquals;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Talkable.class, TalkablePreferencesStore.class})
 @PowerMockIgnore({
-    "javax.net.ssl.*",
-    "android.*",
-    "org.objenesis.*",
-    "sun.misc.Unsafe",
     "javax.crypto.*",
+    "javax.security.*",
+    "javax.net.ssl.*",
+    "javax.net.*",
     "javax.management.*",
     "javax.script.*",
     "javax.xml.*",
-    "org.w3c.*",
+    "org.w3c.dom.*",
+    "org.xml.sax.*",
+    "org.apache.log4j.*",
+    "android.*",
+    "org.mockito.*",
+    "org.robolectric.*",
+    "sun.security.*",
+    "javax.tools.*",
     "com.sun.*",
-    "jdk.*",
-    "org.xml.*"
+    "org.objenesis.*"
 })
 public class TalkableApiUnitTest {
     private static final String _uuid = UUID.randomUUID().toString();
