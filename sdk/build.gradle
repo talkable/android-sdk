@@ -6,11 +6,11 @@ group='com.github.talkable'
 
 android {
     namespace 'com.talkable.sdk'
-    compileSdkVersion 33
+    compileSdkVersion 35
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 33
+        minSdkVersion 21
+        targetSdkVersion 35
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         // Required for sdk version retrieval to work as of Android Studio 4.1.0: https://issuetracker.google.com/issues/158695880

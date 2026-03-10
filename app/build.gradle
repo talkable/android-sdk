@@ -13,11 +13,11 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion 34
+    compileSdkVersion 35
     defaultConfig {
         applicationId "com.talkable.appdemo"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode 35
         versionName "0.5.4"
     }
