@@ -13,13 +13,13 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion 35
+    compileSdkVersion Integer.parseInt(project.android_compile_sdk)
     defaultConfig {
         applicationId "com.talkable.appdemo"
-        minSdkVersion 21
-        targetSdkVersion 35
-        versionCode 35
-        versionName "0.5.4"
+        minSdkVersion Integer.parseInt(project.app_min_sdk)
+        targetSdkVersion Integer.parseInt(project.android_target_sdk)
+        versionCode Integer.parseInt(project.app_version_code)
+        versionName project.app_version_name
     }
     buildTypes {
         release {
@@ -32,7 +32,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion '36.0.0'
+    buildToolsVersion project.android_build_tools
 }
 
 dependencies {
