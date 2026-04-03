@@ -40,6 +40,8 @@ public class MainActivity extends Activity {
     }
 
     public void onAffiliateMemberClick(View view) {
+        Toast.makeText(this, "Loading offer...", Toast.LENGTH_SHORT).show();
+
         Talkable.setServer("https://www.talkable.com");
         Talkable.setSiteSlug("android");
 
@@ -59,14 +61,19 @@ public class MainActivity extends Activity {
     }
 
     public void onPurchaseClick(View view) {
+        view.setEnabled(false);
+        Toast.makeText(this, "Processing...", Toast.LENGTH_SHORT).show();
+
         TalkableApi.createOrigin(buildPurchase(), new Callback2<Origin, Offer>() {
             @Override
             public void onSuccess(Origin purchase, Offer offer) {
+                runOnUiThread(() -> view.setEnabled(true));
                 showToast("Purchase created");
             }
 
             @Override
             public void onError(ApiError error) {
+                runOnUiThread(() -> view.setEnabled(true));
                 showToast("Error: " + error.getMessage());
             }
         });
@@ -94,6 +101,9 @@ public class MainActivity extends Activity {
     }
 
     public void onEventClick(View view) {
+        view.setEnabled(false);
+        Toast.makeText(this, "Processing...", Toast.LENGTH_SHORT).show();
+
         String eventNumber = getOrderNumber();
         String eventCategory = getEventCategory();
         Double subtotal = getSubtotal();
@@ -105,42 +115,54 @@ public class MainActivity extends Activity {
         TalkableApi.createOrigin(event, new Callback2<Origin, Offer>() {
             @Override
             public void onSuccess(Origin origin, Offer offer) {
+                runOnUiThread(() -> view.setEnabled(true));
                 showToast("Event created");
             }
 
             @Override
             public void onError(ApiError error) {
+                runOnUiThread(() -> view.setEnabled(true));
                 showToast("Error: " + error.getMessage());
             }
         });
     }
 
     public void onAffiliateMemberViaApiClick(View view) {
+        view.setEnabled(false);
+        Toast.makeText(this, "Processing...", Toast.LENGTH_SHORT).show();
+
         AffiliateMember affiliateMember = new AffiliateMember();
         affiliateMember.setCustomer(getCustomer());
 
         TalkableApi.createOrigin(affiliateMember, new Callback2<Origin, Offer>() {
             @Override
             public void onSuccess(Origin origin, Offer offer) {
+                runOnUiThread(() -> view.setEnabled(true));
                 showToast("Affiliate Member created");
             }
 
             @Override
             public void onError(ApiError error) {
+                runOnUiThread(() -> view.setEnabled(true));
                 showToast("Error: " + error.getMessage());
             }
         });
     }
 
     public void getRewardsClick(View view) {
+        view.setEnabled(false);
+        Toast.makeText(this, "Processing...", Toast.LENGTH_SHORT).show();
+
         TalkableApi.retrieveRewards(new Callback1<Reward[]>() {
             @Override
             public void onSuccess(Reward[] rewards) {
+                runOnUiThread(() -> view.setEnabled(true));
                 showToast("Rewards count: " + rewards.length);
             }
 
             @Override
             public void onError(ApiError error) {
+                runOnUiThread(() -> view.setEnabled(true));
                 showToast("Error: " + error.getMessage());
             }
         });
@@ -201,6 +223,8 @@ public class MainActivity extends Activity {
     }
 
     public void onPostPurchaseClick(View view) {
+        Toast.makeText(this, "Loading offer...", Toast.LENGTH_SHORT).show();
+
         Talkable.setServer("https://www.talkable.com");
         Talkable.setSiteSlug("android");
 
@@ -230,5 +254,6 @@ public class MainActivity extends Activity {
             paramsMap.put(VISITOR_OFFER_KEY, offerId);
         }
         TalkableDeepLinking.track(paramsMap);
+        Toast.makeText(this, "Deep linking params sent", Toast.LENGTH_SHORT).show();
     }
 }
