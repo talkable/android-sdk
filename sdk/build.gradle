@@ -6,11 +6,11 @@ group='com.github.talkable'
 
 android {
     namespace 'com.talkable.sdk'
-    compileSdkVersion Integer.parseInt(project.android_compile_sdk)
+    compileSdkVersion Integer.parseInt(project.sdk_compile_sdk)
 
     defaultConfig {
         minSdkVersion Integer.parseInt(project.sdk_min_sdk)
-        targetSdkVersion Integer.parseInt(project.android_target_sdk)
+        targetSdkVersion Integer.parseInt(project.sdk_target_sdk)
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         // Required for sdk version retrieval to work as of Android Studio 4.1.0: https://issuetracker.google.com/issues/158695880
@@ -71,8 +71,8 @@ dependencies {
     }
 
     androidTestImplementation 'androidx.annotation:annotation:1.8.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
-    androidTestImplementation 'androidx.test:rules:1.6.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
 
     implementation 'androidx.annotation:annotation:1.8.2'
     implementation 'com.squareup.okhttp3:okhttp:3.2.0' // update to a new version when https://github.com/square/okhttp/issues/3928 will be fixed

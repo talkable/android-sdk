@@ -13,11 +13,11 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion Integer.parseInt(project.android_compile_sdk)
+    compileSdkVersion Integer.parseInt(project.app_compile_sdk)
     defaultConfig {
-        applicationId "com.talkable.appdemo"
+        applicationId "com.talkable.appdemo2"
         minSdkVersion Integer.parseInt(project.app_min_sdk)
-        targetSdkVersion Integer.parseInt(project.android_target_sdk)
+        targetSdkVersion Integer.parseInt(project.app_target_sdk)
         versionCode Integer.parseInt(project.app_version_code)
         versionName project.app_version_name
     }
@@ -39,6 +39,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(path: ':sdk')
     implementation 'com.google.android.material:material:1.0.0'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
