@@ -1,18 +1,21 @@
 apply plugin: 'com.android.library'
 apply plugin: 'de.mobilej.unmock'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven-publish'
 
 group='com.github.talkable'
 
 android {
-    compileSdkVersion 33
+    namespace 'com.talkable.sdk'
+    compileSdkVersion Integer.parseInt(project.sdk_compile_sdk)
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 33
-        versionCode 42
-        versionName "0.5.13"
+        minSdkVersion Integer.parseInt(project.sdk_min_sdk)
+        targetSdkVersion Integer.parseInt(project.sdk_target_sdk)
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        // Required for sdk version retrieval to work as of Android Studio 4.1.0: https://issuetracker.google.com/issues/158695880
+        buildConfigField 'int', 'VERSION_CODE', "${project.sdk_version_code}"
+        buildConfigField 'String', 'VERSION_NAME', "\"${project.sdk_version_name}\""
     }
     buildTypes {
         release {
@@ -24,9 +27,27 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-
-    lintOptions {
+    lint {
         abortOnError false
+    }
+    buildToolsVersion project.android_build_tools
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.talkable'
+                artifactId = 'android-sdk'
+            }
+        }
     }
 }
 
@@ -50,13 +71,13 @@ dependencies {
     }
 
     androidTestImplementation 'androidx.annotation:annotation:1.8.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
-    androidTestImplementation 'androidx.test:rules:1.6.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
 
     implementation 'androidx.annotation:annotation:1.8.2'
     implementation 'com.squareup.okhttp3:okhttp:3.2.0' // update to a new version when https://github.com/square/okhttp/issues/3928 will be fixed
     implementation 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     implementation 'com.facebook.android:facebook-android-sdk:15.2.0'
-    implementation 'com.google.code.gson:gson:2.8.+'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

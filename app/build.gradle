@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
-
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
 
 android {
+    namespace 'com.talkable.appdemo'
     signingConfigs {
         config {
             keyAlias keystoreProperties['keyAlias']
@@ -13,13 +13,13 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion 31
+    compileSdkVersion Integer.parseInt(project.app_compile_sdk)
     defaultConfig {
-        applicationId "com.talkable.demo"
-        minSdkVersion 16
-        targetSdkVersion 31
-        versionCode 34
-        versionName "0.5.3"
+        applicationId "com.talkable.appdemo2"
+        minSdkVersion Integer.parseInt(project.app_min_sdk)
+        targetSdkVersion Integer.parseInt(project.app_target_sdk)
+        versionCode Integer.parseInt(project.app_version_code)
+        versionName project.app_version_name
     }
     buildTypes {
         release {
@@ -32,12 +32,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion project.android_build_tools
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(path: ':sdk')
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }

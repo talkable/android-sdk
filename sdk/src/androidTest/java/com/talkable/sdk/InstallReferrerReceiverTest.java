@@ -2,15 +2,14 @@ package com.talkable.sdk;
 
 import android.content.Context;
 import android.content.Intent;
-import android.test.ActivityInstrumentationTestCase2;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.junit.Assert.*;
 
 /**
  * There are some issues with this test.
@@ -19,16 +18,7 @@ import org.junit.runner.RunWith;
  */
 // TODO: fix test
 @RunWith(AndroidJUnit4.class)
-public class InstallReferrerReceiverTest extends ActivityInstrumentationTestCase2<TalkableActivity> {
-    public InstallReferrerReceiverTest() {
-        super(TalkableActivity.class);
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-    }
+public class InstallReferrerReceiverTest {
 
     @Test
     public void testOnReceive() throws Exception {
@@ -37,16 +27,11 @@ public class InstallReferrerReceiverTest extends ActivityInstrumentationTestCase
         assertEquals(TalkablePreferencesStore.getAlternateUUID(), null);
 
         InstallReferrerReceiver receiver = new InstallReferrerReceiver();
-        Context context = getInstrumentation().getContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
         Intent intent = new Intent();
         intent.putExtra("referrer", alternateUuid);
         receiver.onReceive(context, intent);
 
         assertEquals(TalkablePreferencesStore.getAlternateUUID(), alternateUuid);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
     }
 }
