@@ -4,35 +4,35 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
 
 android {
-    namespace 'com.talkable.appdemo'
+    namespace = 'com.talkable.appdemo'
     signingConfigs {
         config {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = file(keystoreProperties['storeFile'])
+            storePassword = keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion Integer.parseInt(project.app_compile_sdk)
+    compileSdk = Integer.parseInt(project.app_compile_sdk)
     defaultConfig {
-        applicationId "com.talkable.appdemo2"
-        minSdkVersion Integer.parseInt(project.app_min_sdk)
-        targetSdkVersion Integer.parseInt(project.app_target_sdk)
-        versionCode Integer.parseInt(project.app_version_code)
-        versionName project.app_version_name
+        applicationId = "com.talkable.appdemo2"
+        minSdk = Integer.parseInt(project.app_min_sdk)
+        targetSdk = Integer.parseInt(project.app_target_sdk)
+        versionCode = Integer.parseInt(project.app_version_code)
+        versionName = project.app_version_name
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
+            signingConfig = signingConfigs.config
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-    buildToolsVersion project.android_build_tools
+    buildToolsVersion = project.android_build_tools
 }
 
 dependencies {

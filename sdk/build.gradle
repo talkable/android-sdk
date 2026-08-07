@@ -5,32 +5,40 @@ apply plugin: 'maven-publish'
 group='com.github.talkable'
 
 android {
-    namespace 'com.talkable.sdk'
-    compileSdkVersion Integer.parseInt(project.sdk_compile_sdk)
+    namespace = 'com.talkable.sdk'
+    compileSdk = Integer.parseInt(project.sdk_compile_sdk)
 
     defaultConfig {
-        minSdkVersion Integer.parseInt(project.sdk_min_sdk)
-        targetSdkVersion Integer.parseInt(project.sdk_target_sdk)
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        minSdk = Integer.parseInt(project.sdk_min_sdk)
+        testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
 
         // Required for sdk version retrieval to work as of Android Studio 4.1.0: https://issuetracker.google.com/issues/158695880
         buildConfigField 'int', 'VERSION_CODE', "${project.sdk_version_code}"
         buildConfigField 'String', 'VERSION_NAME', "\"${project.sdk_version_name}\""
     }
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 
     testOptions {
+        // targetSdk on library modules only applies to instrumented tests as of AGP 9
+        targetSdk = Integer.parseInt(project.sdk_target_sdk)
         unitTests.returnDefaultValues = true
     }
     lint {
-        abortOnError false
+        abortOnError = false
     }
-    buildToolsVersion project.android_build_tools
+    buildToolsVersion = project.android_build_tools
 
     publishing {
         singleVariant('release') {

@@ -5,7 +5,7 @@ jobs:
       - auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_ACCESS_TOKEN
-        image: cimg/android:2024.01.1
+        image: cimg/android:2026.07.1
         environment:
           JVM_OPTS: -Xmx3200m
 
@@ -19,7 +19,7 @@ jobs:
           key: v2-dependencies-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
       - run:
           name: Download dependencies
-          command: ./gradlew androidDependencies
+          command: ./gradlew :sdk:dependencies :app:dependencies
       - save_cache:
           paths:
             - ~/.gradle
