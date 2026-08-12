@@ -80,16 +80,16 @@ All version and build configuration lives in `gradle.properties`:
 
 | Property | Description | Example |
 |---|---|---|
-| `android_build_tools` | Build tools version (shared) | `36.0.0` |
+| `android_build_tools` | Build tools version (shared) | `37.0.0` |
 | `sdk_compile_sdk` | SDK compile SDK version | `35` |
-| `sdk_target_sdk` | SDK target SDK version | `35` |
+| `sdk_target_sdk` | SDK target SDK version (instrumented tests only as of AGP 9) | `35` |
 | `sdk_min_sdk` | SDK module minimum SDK | `16` |
 | `sdk_version_code` | SDK version code (integer) | `43` |
 | `sdk_version_name` | SDK version name (semver) | `0.5.14` |
-| `app_compile_sdk` | App compile SDK version | `35` |
-| `app_target_sdk` | App target SDK version | `35` |
+| `app_compile_sdk` | App compile SDK version | `37` |
+| `app_target_sdk` | App target SDK version | `37` |
 | `app_min_sdk` | App module minimum SDK | `21` |
-| `app_version_code` | App module version code | `3` |
-| `app_version_name` | App module version name | `1.0.0` |
+| `app_version_code` | App module version code | `4` |
+| `app_version_name` | App module version name | `1.0.1` |
 
 Both `sdk/build.gradle` and `app/build.gradle` read from these properties. Do not hardcode build config values in the module build files.
